@@ -3,7 +3,7 @@
 .login {
   text-align: left;
   padding: 0 2em;
-  background: $brand-pink;
+  background: $brand-dark;
 
   overflow: hidden;
   display: flex;
@@ -19,14 +19,19 @@
 
 .login__title {
   color: #eee;
-  opacity: 0.8;
-  margin: 0 0 50vh;
+  opacity: 0.9;
+  margin: 0 0 5vh;
   padding: 0;
   text-align: center;
+  font-size: 3vmax;
+
+  @media (min-width: $breakpoint-medium) {
+    font-size: 5vh;
+  }
 }
 
 .login__app-icon {
-  font-size: 10vh;
+  font-size: 6vh;
   color: #fff;
   font-weight: 900;
   z-index: 99;
@@ -35,6 +40,10 @@
   text-align: center;
   position: relative;
   right: -1.5vh;
+
+  @media (min-width: $breakpoint-medium) {
+    font-size: 10vh;
+  }
 }
 
 .login__app-icon__dot {
@@ -44,6 +53,8 @@
 .login__content {
   position: relative;
   z-index: 2;
+  width: 100%;
+  text-align: center;
 
   .btn-link {
     text-align: center;
@@ -86,7 +97,8 @@
   animation: mic-drop 0.4s;
   display: flex;
   align-items: center;
-  justify-self: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .spotifyLogo {
@@ -94,6 +106,7 @@
   height: auto;
   margin-right: 1rem;
   color: $spotify-green;
+  margin-left: -15px;
 }
 
 @media (min-width: $breakpoint-small - 1) {
