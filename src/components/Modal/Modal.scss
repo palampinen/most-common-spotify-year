@@ -2,8 +2,6 @@
 @import '../../styles/animations.scss';
 
 .modal {
-  animation: fade-in 0.15s;
-  background: rgba($brand-green, 0.9);
   background: linear-gradient(35deg, #ffa17f, #00223e);
 
   position: fixed;
@@ -12,10 +10,6 @@
   left: 0;
   right: 0;
   z-index: 101;
-
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
 
   overflow-y: auto;
 }

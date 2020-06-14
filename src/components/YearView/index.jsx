@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import get from 'lodash/get';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
+import { getYearlyTracks } from 'concepts/user-library';
 import Modal from 'components/Modal';
 import './YearView.scss';
 
@@ -15,11 +18,14 @@ const YearView = props => {
 
   const year = get(props, ['match', 'params', 'year']);
   const url = window.location.href;
+  const { yearlyTrackCounts } = props;
+  const isSharedPage = yearlyTrackCounts.isEmpty();
+
   return (
     <Modal>
       <div className="yearView">
         <h1>
-          <span className="title">Your Year</span>
+          <span className="title">{isSharedPage ? 'My' : 'Your'} Year</span>
           <span className="highlight">{year}</span>
         </h1>
 
@@ -32,41 +38,76 @@ const YearView = props => {
         </div>
 
         <div className="yearView__footer">
-          <h3>Share your year</h3>
-          <div className="yearView__share">
-            <a
-              className="yearView__share__link"
-              href={`whatsapp://${url}`}
-              title="Share to Whatsapp"
-            >
-              <i className="ion-social-whatsapp"></i>
-            </a>
-            <a
-              className="yearView__share__link"
-              href={`https://twitter.com/intent/tweet?text=Most+common+year+for+my+music+is+${year}&url=${encodeURI(
-                url
-              )}`}
-              rel="noopener noreferrer"
-              title="Share to Twitter"
-            >
-              <i className="ion-social-twitter" />
-            </a>
-            <a
-              className="yearView__share__link"
-              href={`https://www.facebook.com/sharer.php?u=${encodeURI(
-                url
-              )}&t=Most+common+year+for+my+music+is+${year}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Share to Facebook"
-            >
-              <i className="ion-social-facebook" />
-            </a>
-          </div>
+          {!isSharedPage && (
+            <>
+              <h3>Tracks by Year</h3>
+              <div className="yearView__viz">
+                {yearlyTrackCounts.map(yearlyCount => (
+                  <div className="yearView__viz__row" key={yearlyCount.get('year')}>
+                    <div className="yearView__viz__year">{yearlyCount.get('year')}</div>
+                    <div className="yearView__viz__barwrap">
+                      <div
+                        className="yearView__viz__bar"
+                        style={{ width: `${yearlyCount.get('percentage')}%` }}
+                      >
+                        {yearlyCount.get('count')}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <h3>Share your year</h3>
+              <div className="yearView__share">
+                <a
+                  className="yearView__share__link"
+                  href={`whatsapp://${url}`}
+                  title="Share to Whatsapp"
+                >
+                  <i className="ion-social-whatsapp"></i>
+                </a>
+                <a
+                  className="yearView__share__link"
+                  href={`https://twitter.com/intent/tweet?text=Most+common+year+for+my+music+is+${year}&url=${encodeURI(
+                    url
+                  )}`}
+                  rel="noopener noreferrer"
+                  title="Share to Twitter"
+                >
+                  <i className="ion-social-twitter" />
+                </a>
+                <a
+                  className="yearView__share__link"
+                  href={`https://www.facebook.com/sharer.php?u=${encodeURI(
+                    url
+                  )}&t=Most+common+year+for+my+music+is+${year}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Share to Facebook"
+                >
+                  <i className="ion-social-facebook" />
+                </a>
+              </div>
+            </>
+          )}
+
+          {isSharedPage && (
+            <div className="footer-buttons">
+              <Link className="btn-primary" to="/">
+                Check out your Year
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </Modal>
   );
 };
 
-export default YearView;
+const mapStateToProps = state => ({
+  yearlyTrackCounts: getYearlyTracks(state),
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(YearView);

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 
 import { startApp, getAppViewData } from 'concepts/app-view';
-import PlaylistPopup from 'containers/PlaylistPopup';
 import ScrollTopRoute from 'components/ScrollTopRoute';
 import AppHelp from 'components/AppHelp';
 import LoadingView from 'components/LoadingView';
@@ -21,8 +20,6 @@ class AppView extends Component {
     return (
       <div className="App">
         <div className="App-container">
-          <PlaylistPopup />
-
           <div className="App-content">
             <Route exact path={`${match.url}`} component={LoadingView} />
             <ScrollTopRoute exact path={`${match.url}app`} component={AppHelp} />

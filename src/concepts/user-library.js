@@ -26,7 +26,7 @@ export const getPlaylistsTracks = state => state.userLibrary.get('playlistsTrack
 // 1981, 1981-12 or 1981-12-15
 const getYear = date => first(split(date, '-'));
 
-const calculateMostCommonYear = createSelector(getPlaylistsTracks, playlistTracks => {
+const calculateYearOccurrences = createSelector(getPlaylistsTracks, playlistTracks => {
   // uniq tracks?
   const allTracks = playlistTracks.reduce((sum, album) => {
     return sum.concat(album);
@@ -42,6 +42,24 @@ const calculateMostCommonYear = createSelector(getPlaylistsTracks, playlistTrack
     return sum.setIn([releaseDate], (sum.get(releaseDate) || 0) + 1);
   }, Map());
 
+  return yearOccurrences;
+});
+
+export const getYearlyTracks = createSelector(calculateYearOccurrences, tracksPerYear => {
+  if (tracksPerYear.isEmpty()) {
+    return fromJS([]);
+  }
+
+  const max = tracksPerYear.max();
+
+  const years = tracksPerYear.reduce((sum, count, year) => {
+    return sum.push(fromJS({ count, year, percentage: (count / max) * 100 }));
+  }, List([]));
+
+  return years.sortBy(year => year.get('year')).reverse();
+});
+
+const calculateMostCommonYear = createSelector(calculateYearOccurrences, yearOccurrences => {
   const maxOccurrences = yearOccurrences.max();
   // HOX return first occurrence if multiple exists
   const mostCommonYear = yearOccurrences.findKey(val => val === maxOccurrences);

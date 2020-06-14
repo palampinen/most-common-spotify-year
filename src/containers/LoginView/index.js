@@ -23,8 +23,8 @@ class LoginView extends Component {
               Obscurify<span className="login__app-icon__dot">.</span>
             </span>
 
+            <h1 className="login__title">How old is your musical taste?</h1>
             <div className="login__secondary">
-              <h1 className="login__title">How old is your music taste?</h1>
               <button className="btn btn-primary btn-login" onClick={this.props.authorizeUser}>
                 <SpotifyLogo className="spotifyLogo" /> Log in with Spotify
               </button>

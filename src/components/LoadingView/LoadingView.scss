@@ -1,5 +1,4 @@
 @import 'styles/variables.scss';
-@import 'styles/animations.scss';
 
 .loading {
   display: flex;
@@ -8,14 +7,16 @@
   flex-direction: column;
   min-height: 90vh;
   padding: 2vh;
+  text-align: center;
 
   h2 {
-    color: $brand-green;
+    color: #fffdea;
+    text-align: center;
   }
 
   .spinner {
-    stroke: $brand-green;
-    fill: $brand-green;
+    stroke: #fffdea;
+    fill: #fffdea;
 
     svg {
       width: 10vmax;
