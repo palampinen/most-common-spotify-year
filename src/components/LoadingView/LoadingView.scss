@@ -1,0 +1,25 @@
+@import 'styles/variables.scss';
+@import 'styles/animations.scss';
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 90vh;
+  padding: 2vh;
+
+  h2 {
+    color: $brand-green;
+  }
+
+  .spinner {
+    stroke: $brand-green;
+    fill: $brand-green;
+
+    svg {
+      width: 10vmax;
+      height: 10vmax;
+    }
+  }
+}
