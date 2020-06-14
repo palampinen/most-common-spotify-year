@@ -13,13 +13,12 @@ class AppInfo extends Component {
     return (
       <Modal>
         <div className="app-info">
-          <div className="app-info__logo">
-            <AppIcon />
-          </div>
-          <h1>Replayify App</h1>
+          <h1 className="appTitle">
+            Obscurify<span className="green">.</span>
+          </h1>
           <p>
-            This is an Application to Discover your Spotify usage and creating playlist from your
-            Top Artists and Tracks. It uses Spotify Web API.
+            This is an Application to find out how old music you tend to listen. It will analyze all
+            release dates of your playlist tracks and show which year appears the most.
           </p>
           <h3>Required Spotify access</h3>
           <p>
@@ -43,11 +42,12 @@ class AppInfo extends Component {
             target="_blank"
             rel="noopener noreferrer"
             href="https://developer.spotify.com/documentation/general/guides/authorization-guide/"
+            class="read-more"
           >
             Read more about Spotify scopes
           </a>
           <div className="app-info__buttons">
-            <Link className="btn btn-secondary" to="/login">
+            <Link className="btn btn-primary" to="/login">
               OK, got it{' '}
               <span aria-label="OK" role="img">
                 👌🏻

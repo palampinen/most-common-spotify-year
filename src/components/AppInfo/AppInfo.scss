@@ -4,18 +4,36 @@
   display: block;
   max-width: $breakpoint-small * 0.8;
   margin: 0 auto;
+  color: #fff;
 
   animation: mic-drop 0.75s;
+}
+
+.appTitle {
+  font-size: 4rem;
+
+  .green {
+    color: $spotify-green;
+  }
 }
 
 .app-info__buttons {
   margin: 2em 0;
 }
 
+.scope-list {
+  padding: 0 0 0 1rem;
+}
 .scope-list li {
   font-weight: bold;
 }
 
 .app-info__logo {
   text-align: left;
+}
+
+.read-more {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: underline;
 }
