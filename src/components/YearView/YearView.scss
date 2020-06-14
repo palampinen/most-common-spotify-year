@@ -10,34 +10,43 @@
 
   h1 {
     text-align: center;
-    font-size: 3.5rem;
-    color: $brand-dark;
+    font-size: 6vmax;
+    color: #fff;
+    font-weight: 500;
+    margin-top: 20vmax;
 
     transform: translate3d(0, -4px, 0);
     opacity: 0;
 
-    animation: mic-drop 0.5s;
+    animation: mic-drop 1s;
     animation-delay: 0.75s;
     animation-fill-mode: forwards;
 
-    span {
-      color: $spotify-green;
+    .title {
+      white-space: nowrap;
+    }
+
+    .highlight {
       display: block;
+      font-weight: 700;
+      font-size: 10vmax;
+      filter: drop-shadow(0 2vw 1vw rgba($brand-dark, 0.06));
 
       transform: translate3d(0, -4px, 0);
       opacity: 0;
-      animation: mic-drop 1s;
-      animation-delay: 1s;
+      animation: mic-drop 1.5s;
+      animation-delay: 1.25s;
       animation-fill-mode: forwards;
     }
   }
 
   h3 {
-    color: $brand-dark;
+    color: #fff;
     text-align: center;
   }
 
   p {
+    color: #fff;
     font-size: 1.1rem;
     line-height: 1.5;
     text-align: center;
@@ -54,17 +63,25 @@
 
 .yearView__img {
   width: 100%;
-  min-width: 600px;
-  height: 350px;
+  height: auto;
   border-radius: 10px;
   overflow: hidden;
   background: #eee;
   animation: fade-in 0.5s;
   margin: 1rem 0 1rem;
+  line-height: 0;
+
+  @media (min-width: 600px) {
+    min-width: 600px;
+    height: 350px;
+  }
 }
 
 .yearView__img__img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
 .yearView__footer {
@@ -90,14 +107,13 @@
   line-height: 40px;
   width: 40px;
   height: 40px;
-  color: $dark-grey;
+  color: #04243f;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   margin: 0em 0.4em;
-  opacity: 0.8;
   transition: all 0.15s;
   transform-origin: 50% 50%;
 

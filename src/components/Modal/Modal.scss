@@ -3,7 +3,8 @@
 
 .modal {
   animation: fade-in 0.15s;
-  background: rgba(#f2f2f2, 0.9);
+  background: rgba($brand-green, 0.9);
+  background: linear-gradient(35deg, #ffa17f, #00223e);
 
   position: fixed;
   top: 0;
@@ -20,7 +21,7 @@
 }
 
 .modal__content {
-  background: #fff;
+  background: transparent;
 
   position: absolute;
   left: 0em;
@@ -39,7 +40,7 @@
 
   .modal__content {
     position: static;
-    max-width: $breakpoint-small;
+    max-width: 60vw;
     margin: 0 auto;
     padding: 1.5em 2em 2em;
   }

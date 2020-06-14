@@ -19,17 +19,16 @@ const YearView = props => {
     <Modal>
       <div className="yearView">
         <h1>
-          Your Year
-          <br />
-          <span>{year}</span>
+          <span className="title">Your Year</span>
+          <span className="highlight">{year}</span>
         </h1>
 
         <div className="yearView__content">
           {randomFact && <p>{randomFact}</p>}
 
-          <div className="yearView__img">
+          <figure className="yearView__img">
             <img src="https://picsum.photos/600/350?grayscale" className="yearView__img__img" />
-          </div>
+          </figure>
         </div>
 
         <div className="yearView__footer">
