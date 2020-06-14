@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { saveLogin } from '../../concepts/auth';
+import { saveLogin } from 'concepts/auth';
 
 class Callback extends Component {
   componentDidMount() {
@@ -16,7 +16,4 @@ class Callback extends Component {
 const mapStateToProps = () => ({});
 const mapDispatchToProps = { saveLogin };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Callback);
+export default connect(mapStateToProps, mapDispatchToProps)(Callback);

@@ -31,9 +31,10 @@ export const checkLogin = () => dispatch => {
 
   if (!accessToken) {
     history.replace('/login');
+    return Promise.reject();
   }
 
-  return;
+  return Promise.resolve();
 };
 
 export const saveLogin = () => dispatch => {

@@ -18,9 +18,12 @@ export const getAppViewData = createStructuredSelector({
 export const startApp = () => dispatch => {
   console.log('Starting app view...');
 
-  dispatch(checkLogin());
-
-  dispatch(fetchUserProfile());
-
-  dispatch(fetchMostCommonYear());
+  dispatch(checkLogin())
+    .then(() => {
+      dispatch(fetchUserProfile());
+      dispatch(fetchMostCommonYear());
+    })
+    .catch(() => {
+      console.log('not logged in');
+    });
 };
