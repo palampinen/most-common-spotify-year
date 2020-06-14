@@ -9,6 +9,8 @@ import AppInfo from 'components/AppInfo';
 import AppView from 'containers/AppView';
 import LoginView from 'containers/LoginView';
 import Callback from 'containers/Callback';
+import YearView from 'components/YearView';
+import ScrollTopRoute from 'components/ScrollTopRoute';
 
 const App = () => (
   <Provider store={store}>
@@ -17,6 +19,7 @@ const App = () => (
         <Route exact path="/login" component={LoginView} />
         <Route exact path="/app-info" component={AppInfo} />
         <Route exact path="/callback" component={Callback} />
+        <ScrollTopRoute exact path="/year/:year" component={YearView} />
         <Route path="/" component={AppView} />
       </Switch>
     </ConnectedRouter>
