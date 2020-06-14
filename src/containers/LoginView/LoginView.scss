@@ -1,4 +1,5 @@
 @import 'styles/variables.scss';
+@import 'styles/animations.scss';
 
 .login {
   text-align: left;
@@ -41,6 +42,12 @@
   position: relative;
   right: -1.5vh;
 
+  transform: translate3d(0, -4px, 0);
+  opacity: 0;
+  animation: mic-drop 1s;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+
   @media (min-width: $breakpoint-medium) {
     font-size: 10vh;
   }
@@ -48,6 +55,13 @@
 
 .login__app-icon__dot {
   color: $spotify-green;
+}
+
+.login__secondary {
+  opacity: 0;
+  animation: fade-in 1.2s;
+  animation-delay: 1.25s;
+  animation-fill-mode: forwards;
 }
 
 .login__content {
