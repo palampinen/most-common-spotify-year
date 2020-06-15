@@ -61,7 +61,7 @@ const YearView = props => {
               <div className="yearView__share">
                 <a
                   className="yearView__share__link"
-                  href={`whatsapp://${url}`}
+                  href={`https://wa.me/?text=${url}`}
                   title="Share to Whatsapp"
                 >
                   <i className="ion-social-whatsapp"></i>
