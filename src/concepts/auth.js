@@ -8,6 +8,8 @@ import queryParametrize from '../services/query-parametrize';
 import parseAccessToken from '../services/auth';
 import history from '../services/history';
 
+const ACCESS_TOKEN_LOCAL_STORAGE_KEY = 'spotifyAccessToken';
+
 // # Action Types
 const SET_USER_LOGGED_IN = 'auth/SET_USER_LOGGED_IN';
 
@@ -27,7 +29,7 @@ export const authorizeUser = () => dispatch => {
 };
 
 export const checkLogin = () => dispatch => {
-  const accessToken = localStorage.get('accessToken');
+  const accessToken = localStorage.get(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
   if (!accessToken) {
     history.replace('/login');
@@ -42,7 +44,7 @@ export const saveLogin = () => dispatch => {
 
   // redirect
   if (accessToken) {
-    localStorage.set('accessToken', accessToken);
+    localStorage.set(ACCESS_TOKEN_LOCAL_STORAGE_KEY, accessToken);
 
     // try to get redirect from local storage
     let redirectTo = localStorage.get('redirectTo') || '/';
