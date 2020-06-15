@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import config from '../../config';
 
 import Modal from '../Modal';
-import AppIcon from '../AppIcon';
 import './AppInfo.scss';
 
 class AppInfo extends Component {
@@ -18,7 +17,7 @@ class AppInfo extends Component {
           </h1>
           <p>
             This is an Application to find out how old music you tend to listen. It will analyze all
-            release dates of your playlist tracks and show which year appears the most.
+            release dates of your saved and playlist tracks and show which year appears the most.
           </p>
           <h3>Required Spotify access</h3>
           <p>

@@ -156,6 +156,7 @@
   margin-left: 62px;
 }
 
+$max-bars-has-animation: 100;
 .yearView__viz__bar {
   padding: 3px 5px;
   background: #fff;
@@ -168,6 +169,16 @@
   color: #555;
   font-size: 0.8rem;
   min-width: 20px;
+
+  transform: scaleX(0);
+  animation: scaleX-in 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+
+  @for $i from 1 through $max-bars-has-animation {
+    &:nth-child(#{$i}) {
+      animation-delay: $i * (50ms);
+    }
+  }
 }
 
 .footer-buttons {
