@@ -51,7 +51,7 @@ export const saveLogin = () => dispatch => {
     localStorage.remove('redirectTo');
 
     // we dont want to redirect to login anymore
-    if (redirectTo === '/login') {
+    if (redirectTo === '/login' || redirectTo === 'undefined' || redirectTo === '/undefined') {
       redirectTo = '/';
     }
 
