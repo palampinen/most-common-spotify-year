@@ -8,7 +8,6 @@ import { ReactComponent as PlayIcon } from 'assets/play-icon.svg';
 
 import { getYearlyTrackCounts, getYearlyTracks } from 'concepts/user-library';
 import Modal from 'components/Modal';
-import history from 'services/history';
 import './YearView.scss';
 
 const YearTracksView = ({ year, tracksByYears, clearYear }) => {
