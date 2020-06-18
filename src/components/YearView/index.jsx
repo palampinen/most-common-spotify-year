@@ -41,7 +41,10 @@ const YearTracksView = ({ year, tracksByYears, clearYear }) => {
               >
                 {' '}
                 <figure className="img">
-                  <img src={track.getIn(['track', 'album', 'images', 2, 'url'])} />
+                  <img
+                    alt="Album cover"
+                    src={track.getIn(['track', 'album', 'images', 2, 'url'])}
+                  />
                   <PlayIcon className="play-icon" />
                 </figure>
                 <div>
@@ -75,10 +78,6 @@ const YearView = props => {
       .then(data => setRandomFact(data.text));
   }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [detailYear]);
-
   const year = get(props, ['match', 'params', 'year']);
   const url = window.location.href;
   const { yearlyTrackCounts, tracksByYears } = props;
@@ -104,7 +103,11 @@ const YearView = props => {
             {randomFact && <p>{randomFact}</p>}
 
             <figure className="yearView__img">
-              <img src="https://picsum.photos/600/350?grayscale" className="yearView__img__img" />
+              <img
+                alt={`Pic from year ${year}`}
+                src="https://picsum.photos/600/350?grayscale"
+                className="yearView__img__img"
+              />
             </figure>
           </div>
 
