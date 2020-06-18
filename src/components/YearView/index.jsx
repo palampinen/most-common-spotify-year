@@ -8,13 +8,13 @@ import { ReactComponent as PlayIcon } from 'assets/play-icon.svg';
 
 import { getYearlyTrackCounts, getYearlyTracks } from 'concepts/user-library';
 import Modal from 'components/Modal';
+import history from 'services/history';
 import './YearView.scss';
 
 const YearTracksView = ({ year, tracksByYears, clearYear }) => {
   const tracksByYear = tracksByYears.get(year);
 
   window.onpopstate = function (event) {
-    console.log('back');
     event.preventDefault && event.preventDefault();
     clearYear();
 
@@ -27,9 +27,9 @@ const YearTracksView = ({ year, tracksByYears, clearYear }) => {
     <Modal className="trackView__modal">
       <div className="yearView trackView">
         <button className="backButton" onClick={clearYear}>
-          ← Back
+          <i className="ion-arrow-left-c icon"></i> Back
         </button>
-        <h3>Track from Year {year}</h3>
+        <h3>Tracks from Year {year}</h3>
         <div className="trackList">
           {tracksByYear
             .sortBy(track => track.getIn(['track', 'artists', 0, 'name']))
@@ -60,7 +60,7 @@ const YearTracksView = ({ year, tracksByYears, clearYear }) => {
         </div>
         {tracksByYear.size > 10 && (
           <button className="backButton" onClick={clearYear}>
-            ← Back
+            <i className="ion-arrow-left-c icon"></i> Back
           </button>
         )}
       </div>
@@ -89,7 +89,10 @@ const YearView = props => {
         <YearTracksView
           tracksByYears={tracksByYears}
           year={detailYear}
-          clearYear={() => setYearDetail(null)}
+          clearYear={() => {
+            window.location.hash = '';
+            setYearDetail(null);
+          }}
         />
       )}
       <Modal>
@@ -120,7 +123,10 @@ const YearView = props => {
                     <div
                       className="yearView__viz__row"
                       key={yearlyCount.get('year')}
-                      onClick={() => setYearDetail(yearlyCount.get('year'))}
+                      onClick={() => {
+                        window.location.hash = 'tracks';
+                        setYearDetail(yearlyCount.get('year'));
+                      }}
                     >
                       <div className="yearView__viz__year">{yearlyCount.get('year')}</div>
                       <div className="yearView__viz__barwrap">

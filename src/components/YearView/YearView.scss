@@ -208,6 +208,10 @@ $max-bars-has-animation: 100;
 
   cursor: pointer;
 
+  .icon {
+    margin: 0 2px 0 -2px;
+  }
+
   &:hover {
     background: rgba(255, 255, 255, 0.1);
   }
