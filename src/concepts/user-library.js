@@ -46,7 +46,7 @@ const calculateYearOccurrences = createSelector(
       const releaseYear = getYear(track.getIn(['track', 'album', 'release_date']));
 
       if (isNil(releaseYear)) {
-        return;
+        return sum;
       }
 
       return sum.setIn([releaseYear], (sum.get(releaseYear) || 0) + 1);
