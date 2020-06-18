@@ -41,8 +41,11 @@ const calculateYearOccurrences = createSelector(
     }, List([]));
 
     const allTracks = uniqBy(allPlaylistTracks.concat(savedTracks), 'track.id');
+    const validTracks = allTracks.filter(
+      track => track.getIn(['track', 'album', 'album_type']) !== 'compilation'
+    );
 
-    const yearOccurrences = allTracks.reduce((sum, track) => {
+    const yearOccurrences = validTracks.reduce((sum, track) => {
       const releaseYear = getYear(track.getIn(['track', 'album', 'release_date']));
 
       if (isNil(releaseYear)) {
@@ -66,7 +69,11 @@ export const getYearlyTracks = createSelector(
 
     const allTracks = uniqBy(allPlaylistTracks.concat(savedTracks), 'track.id');
 
-    const tracksByYear = allTracks.reduce((sum, track) => {
+    const validTracks = allTracks.filter(
+      track => track.getIn(['track', 'album', 'album_type']) !== 'compilation'
+    );
+
+    const tracksByYear = validTracks.reduce((sum, track) => {
       const releaseYear = getYear(track.getIn(['track', 'album', 'release_date']));
 
       return sum.set(releaseYear, (sum.get(releaseYear) || List()).push(track));
@@ -141,7 +148,8 @@ const fetchPlaylistTracks = playlistId => dispatch =>
       type: FETCH_PLAYLIST_TRACKS,
       url: `/playlists/${playlistId}`,
       params: {
-        fields: 'id,tracks.items(track(id,uri,name,artists(name),album(id,release_date,images)))',
+        fields:
+          'id,tracks.items(track(id,uri,name,artists(name),album(id,album_type,release_date,images)))',
       },
     })
   );
