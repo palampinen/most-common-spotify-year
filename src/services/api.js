@@ -6,7 +6,7 @@ import history from './history';
 import { authorizeUser } from '../concepts/auth';
 import { getCurrentPathName } from '../concepts/route';
 
-const getAccessToken = () => localStorage.get('accessToken');
+const getAccessToken = () => localStorage.get('spotifyAccessToken');
 
 const getAuthHeader = token => {
   if (token) {
