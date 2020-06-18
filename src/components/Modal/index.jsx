@@ -1,10 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
-import "./Modal.scss";
+import './Modal.scss';
 
-const Modal = ({ children }) => (
-  <div className="modal">
+const Modal = ({ children, className, rest }) => (
+  <div className={classnames('modal', className)} {...rest}>
     <div className="modal__content">{children}</div>
   </div>
 );

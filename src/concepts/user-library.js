@@ -43,20 +43,40 @@ const calculateYearOccurrences = createSelector(
     const allTracks = uniqBy(allPlaylistTracks.concat(savedTracks), 'track.id');
 
     const yearOccurrences = allTracks.reduce((sum, track) => {
-      const releaseDate = getYear(track.getIn(['track', 'album', 'release_date']));
+      const releaseYear = getYear(track.getIn(['track', 'album', 'release_date']));
 
-      if (isNil(releaseDate)) {
+      if (isNil(releaseYear)) {
         return;
       }
 
-      return sum.setIn([releaseDate], (sum.get(releaseDate) || 0) + 1);
+      return sum.setIn([releaseYear], (sum.get(releaseYear) || 0) + 1);
     }, Map());
 
     return yearOccurrences;
   }
 );
 
-export const getYearlyTracks = createSelector(calculateYearOccurrences, tracksPerYear => {
+export const getYearlyTracks = createSelector(
+  getPlaylistsTracks,
+  getSavedTracks,
+  (playlistTracks, savedTracks) => {
+    const allPlaylistTracks = playlistTracks.reduce((sum, playlist) => {
+      return sum.concat(playlist);
+    }, List([]));
+
+    const allTracks = uniqBy(allPlaylistTracks.concat(savedTracks), 'track.id');
+
+    const tracksByYear = allTracks.reduce((sum, track) => {
+      const releaseYear = getYear(track.getIn(['track', 'album', 'release_date']));
+
+      return sum.set(releaseYear, (sum.get(releaseYear) || List()).push(track));
+    }, Map());
+
+    return tracksByYear;
+  }
+);
+
+export const getYearlyTrackCounts = createSelector(calculateYearOccurrences, tracksPerYear => {
   if (tracksPerYear.isEmpty()) {
     return fromJS([]);
   }
@@ -120,7 +140,9 @@ const fetchPlaylistTracks = playlistId => dispatch =>
     apiCall({
       type: FETCH_PLAYLIST_TRACKS,
       url: `/playlists/${playlistId}`,
-      params: { fields: 'id,tracks.items(track(id,name,album(id,release_date)))' },
+      params: {
+        fields: 'id,tracks.items(track(id,uri,name,artists(name),album(id,release_date,images)))',
+      },
     })
   );
 
