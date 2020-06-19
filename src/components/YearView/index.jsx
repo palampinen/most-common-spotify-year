@@ -1,71 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import get from 'lodash/get';
-import { List } from 'immutable';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { ReactComponent as PlayIcon } from 'assets/play-icon.svg';
-
-import { getYearlyTrackCounts, getYearlyTracks } from 'concepts/user-library';
+import {
+  getRandomCoverFromMainYear,
+  getYearlyTrackCounts,
+  getYearlyTracks,
+  getYearsWithTracks,
+  fetchMostCommonYear,
+} from 'concepts/user-library';
 import Modal from 'components/Modal';
+import TracksFromYear from 'components/TracksFromYear';
 import './YearView.scss';
-
-const YearTracksView = ({ year, tracksByYears, clearYear }) => {
-  const tracksByYear = tracksByYears.get(year);
-
-  window.onpopstate = function (event) {
-    event.preventDefault && event.preventDefault();
-    clearYear();
-
-    setTimeout(function () {
-      window.onpopstate = null;
-    });
-  };
-
-  return (
-    <Modal className="trackView__modal">
-      <div className="yearView trackView">
-        <button className="backButton" onClick={clearYear}>
-          <i className="ion-arrow-left-c icon"></i> Back
-        </button>
-        <h3>Tracks from Year {year}</h3>
-        <div className="trackList">
-          {tracksByYear
-            .sortBy(track => track.getIn(['track', 'artists', 0, 'name']))
-            .map(track => (
-              <a
-                className="track"
-                href={track.getIn(['track', 'uri'])}
-                key={track.getIn(['track', 'id'])}
-              >
-                {' '}
-                <figure className="img">
-                  <img
-                    alt="Album cover"
-                    src={track.getIn(['track', 'album', 'images', 2, 'url'])}
-                  />
-                  <PlayIcon className="play-icon" />
-                </figure>
-                <div>
-                  <div className="artist">
-                    {(track.getIn(['track', 'artists']) || List())
-                      .map(artist => artist.get('name'))
-                      .join(', ')}
-                  </div>
-                  <div className="name">{track.getIn(['track', 'name'])}</div>
-                </div>
-              </a>
-            ))}
-        </div>
-        {tracksByYear.size > 10 && (
-          <button className="backButton" onClick={clearYear}>
-            <i className="ion-arrow-left-c icon"></i> Back
-          </button>
-        )}
-      </div>
-    </Modal>
-  );
-};
 
 const YearView = props => {
   const [randomFact, setRandomFact] = useState('');
@@ -79,15 +26,24 @@ const YearView = props => {
 
   const year = get(props, ['match', 'params', 'year']);
   const url = window.location.href;
-  const { yearlyTrackCounts, tracksByYears } = props;
+  const { yearlyTrackCounts, tracksByYears, yearsWithTracks, mainYearCoverUrl } = props;
   const isSharedPage = yearlyTrackCounts.isEmpty();
+
+  // To ease development
+  // useEffect(() => {
+  //   if (process.env.NODE_ENV === 'development' && isSharedPage) {
+  //     props.fetchMostCommonYear();
+  //   }
+  // }, []);
 
   return (
     <>
       {!!detailYear && (
-        <YearTracksView
+        <TracksFromYear
           tracksByYears={tracksByYears}
           year={detailYear}
+          availableYears={yearsWithTracks}
+          setYear={setYearDetail}
           clearYear={() => {
             window.location.hash = '';
             setYearDetail(null);
@@ -102,12 +58,12 @@ const YearView = props => {
           </h1>
 
           <div className="yearView__content">
-            {randomFact && <p>{randomFact}</p>}
+            {randomFact && <p className="yearView__fact">{randomFact}</p>}
 
             <figure className="yearView__img">
               <img
-                alt={`Pic from year ${year}`}
-                src="https://picsum.photos/600/350?grayscale"
+                alt={`Album from year ${year}`}
+                src={mainYearCoverUrl || 'https://picsum.photos/500/500'}
                 className="yearView__img__img"
               />
             </figure>
@@ -177,7 +133,10 @@ const YearView = props => {
             {isSharedPage && (
               <div className="footer-buttons">
                 <Link className="btn-primary" to="/">
-                  Check out your Year
+                  Find out your Year{' '}
+                  <span role="img" aria-label="music">
+                    🎵
+                  </span>
                 </Link>
               </div>
             )}
@@ -191,8 +150,10 @@ const YearView = props => {
 const mapStateToProps = state => ({
   yearlyTrackCounts: getYearlyTrackCounts(state),
   tracksByYears: getYearlyTracks(state),
+  yearsWithTracks: getYearsWithTracks(state),
+  mainYearCoverUrl: getRandomCoverFromMainYear(state),
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { fetchMostCommonYear };
 
 export default connect(mapStateToProps, mapDispatchToProps)(YearView);
