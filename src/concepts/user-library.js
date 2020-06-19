@@ -12,6 +12,9 @@ import { apiCall } from 'services/api';
 import { createSelector } from 'reselect';
 import history from 'services/history';
 import { uniqBy } from 'services/immutable';
+import { getUserId } from 'concepts/user';
+
+import FamousComposers from 'constants/FamousComposers';
 
 // # Action Types
 const FETCH_PLAYLISTS = 'userLibrary/FETCH_PLAYLISTS';
@@ -47,14 +50,24 @@ const getYear = date => first(split(date, '-'));
 const getAllUsersTracks = createSelector(
   getPlaylistsTracks,
   getSavedTracks,
-  (playlistTracks, savedTracks) => {
+  getUserId,
+  (playlistTracks, savedTracks, userId) => {
     const allPlaylistTracks = playlistTracks.reduce((sum, playlist) => {
       return sum.concat(playlist);
     }, List([]));
 
+    const ownPlaylistTracks = allPlaylistTracks.filter(track => {
+      const addedByUserId = track.getIn(['added_by', 'id']);
+      return addedByUserId === '' || addedByUserId === userId;
+    });
+
     return (
-      uniqBy(allPlaylistTracks.concat(savedTracks), 'track.id')
-        // remove track key
+      uniqBy(ownPlaylistTracks.concat(savedTracks), 'track.id')
+        // remove old famous composers because these albums do "correct date"
+        .filter(
+          track => FamousComposers.indexOf(track.getIn(['track', 'artists', 0, 'name'])) === -1
+        )
+        // remove keyed by track
         .reduce((sum, track) => sum.push(track.get('track')), List())
     );
   }
@@ -183,7 +196,7 @@ const fetchPlaylistTracks = playlistId => dispatch =>
       url: `/playlists/${playlistId}`,
       params: {
         fields:
-          'id,tracks.items(track(id,uri,name,artists(name),album(id,album_type,release_date,images)))',
+          'id,tracks.items(added_by(id),track(id,uri,name,artists(name),album(id,album_type,release_date,images)))',
       },
     })
   );
@@ -273,15 +286,6 @@ const searchTrack = track => dispatch => {
     .catch(() => console.log('Could not get track'));
 };
 
-// const BATCH_SIZE = 5;
-
-// const fetchBatch = (page) => dispatch => {
-
-//   return Promise.all(
-//     times(compilationTracks.size, index => dispatch(searchTrack(compilationTracks.get(index))))
-//   );
-// }
-
 const fetchCompilationAlbumTracks = () => (dispatch, getState) => {
   const tracks = getAllUsersTracks(getState());
 
@@ -289,44 +293,39 @@ const fetchCompilationAlbumTracks = () => (dispatch, getState) => {
     track => track.getIn(['album', 'album_type']) === 'compilation'
   );
 
-  return Promise.all(
-    times(compilationTracks.size, index => dispatch(searchTrack(compilationTracks.get(index))))
+  const DELAY_BETWEEN_BATCHES_MS = 100;
+  const BATCH_SIZE = 20;
+  const trackCount = compilationTracks.size;
+  const amountOfBatchesNeeded = Math.ceil(trackCount / BATCH_SIZE);
+
+  if (!trackCount) {
+    return Promise.resolve();
+  }
+
+  function delay(t, v) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve.bind(null, v), t);
+    });
+  }
+
+  const fetchBatch = page =>
+    Promise.all(
+      times(BATCH_SIZE, index => {
+        const track = compilationTracks.get(page * BATCH_SIZE + index);
+        if (!track) {
+          return Promise.resolve();
+        }
+
+        return dispatch(searchTrack(compilationTracks.get(page * BATCH_SIZE + index)));
+      })
+    );
+
+  const pageArray = times(amountOfBatchesNeeded, i => i);
+
+  return pageArray.reduce(
+    (prev, page) => prev.then(() => delay(DELAY_BETWEEN_BATCHES_MS)).then(() => fetchBatch(page)),
+    Promise.resolve()
   );
-
-  // const BATCH_SIZE = 5;
-  // const trackCount = compilationTracks.size;
-  // const amountOfBatchesNeeded = Math.ceil(trackCount / BATCH_SIZE);
-  // let counter = 0;
-
-  // if (!trackCount) {
-  //   return;
-  // }
-
-  // return new Promise(function (resolve, reject) {
-
-  //     Promise.resolve(dispatch(fetchBatch(0))).then(() => {
-
-  //       if (counter <= amountOfBatchesNeeded)  {
-  //         resolve();
-  //         return;
-  //       }
-
-  //       counter++;
-  //       fetchBatch(counter)
-  //     })
-  // });
-
-  // batches/chunks
-
-  // Promise.all()
-
-  // Promise.all( batches.map(() => dispatch... ))
-
-  // @TODO
-  // We need to get these in delayed batches because API return 429
-  // return Promise.all(
-  //   times(compilationTracks.size, index => dispatch(searchTrack(compilationTracks.get(index))))
-  // );
 };
 
 const redirectToCorrectYearPage = () => (dispatch, getState) => {
