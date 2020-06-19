@@ -158,6 +158,10 @@
 }
 
 .yearView__share {
+  margin: 5rem 0 0;
+}
+
+.yearView__share__buttons {
   text-align: center;
   margin: 1em auto 1em;
   display: flex;
@@ -170,7 +174,8 @@
   line-height: 40px;
   width: 40px;
   height: 40px;
-  color: #04243f;
+  color: rgba(0, 0, 0, 0.8);
+  color: $gradient-2;
 
   display: flex;
   justify-content: center;

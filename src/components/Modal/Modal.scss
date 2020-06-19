@@ -2,7 +2,7 @@
 @import '../../styles/animations.scss';
 
 .modal {
-  background: linear-gradient(35deg, #ffa17f, #00223e);
+  background: linear-gradient(35deg, $gradient-1, $gradient-2);
 
   position: fixed;
   top: 0;

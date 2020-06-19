@@ -87,7 +87,7 @@
   top: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(35deg, rgba(#ffa17f, 0.5) 0, rgba(#00223e, 0.5) 100%),
+  background: linear-gradient(35deg, rgba($gradient-1, 0.5) 0, rgba($gradient-2, 0.5) 100%),
     url('https://images.unsplash.com/photo-1483412033650-1015ddeb83d1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1900');
 
   background-repeat: no-repeat;

@@ -1,9 +1,8 @@
 @import 'styles/variables.scss';
 
 .App {
-  // padding-top: $header-height + $header-top-extra;
   padding-top: 0;
-  background: linear-gradient(35deg, #ffa17f, #00223e);
+  background: linear-gradient(35deg, $gradient-1, $gradient-2);
   height: 100vh;
 }
 

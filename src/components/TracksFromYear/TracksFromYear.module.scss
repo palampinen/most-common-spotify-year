@@ -164,13 +164,17 @@
     margin: 0 0 0 -2px;
   }
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
   &:active {
+    background: rgba(255, 255, 255, 0.1);
+
     .icon {
       transform: scale(0.975);
+    }
+  }
+
+  @media (min-width: $breakpoint-medium) {
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
   }
 }
