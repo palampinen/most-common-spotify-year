@@ -260,7 +260,7 @@ const searchTrack = track => dispatch => {
     apiCall({
       type: SEARCH_TRACK,
       url: `/search`,
-      params: { q: `${artistName} ${trackName}`, type: 'track' },
+      params: { q: `${artistName} ${trackName}`, type: 'track', limit: 3 },
     })
   )
     .then(result => {
