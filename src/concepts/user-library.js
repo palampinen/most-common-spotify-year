@@ -293,7 +293,7 @@ const fetchCompilationAlbumTracks = () => (dispatch, getState) => {
     track => track.getIn(['album', 'album_type']) === 'compilation'
   );
 
-  const DELAY_BETWEEN_BATCHES_MS = 100;
+  const DELAY_BETWEEN_BATCHES_MS = 500;
   const BATCH_SIZE = 20;
   const trackCount = compilationTracks.size;
   const amountOfBatchesNeeded = Math.ceil(trackCount / BATCH_SIZE);
