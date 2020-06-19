@@ -96,36 +96,38 @@ const YearView = props => {
                   ))}
                 </div>
 
-                <h3>Share your year</h3>
                 <div className="yearView__share">
-                  <a
-                    className="yearView__share__link"
-                    href={`https://wa.me/?text=${url}`}
-                    title="Share to Whatsapp"
-                  >
-                    <i className="ion-social-whatsapp"></i>
-                  </a>
-                  <a
-                    className="yearView__share__link"
-                    href={`https://twitter.com/intent/tweet?text=Most+common+year+for+my+music+is+${year}&url=${encodeURI(
-                      url
-                    )}`}
-                    rel="noopener noreferrer"
-                    title="Share to Twitter"
-                  >
-                    <i className="ion-social-twitter" />
-                  </a>
-                  <a
-                    className="yearView__share__link"
-                    href={`https://www.facebook.com/sharer.php?u=${encodeURI(
-                      url
-                    )}&t=Most+common+year+for+my+music+is+${year}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Share to Facebook"
-                  >
-                    <i className="ion-social-facebook" />
-                  </a>
+                  <h3>Share your year</h3>
+                  <div className="yearView__share__buttons">
+                    <a
+                      className="yearView__share__link"
+                      href={`https://wa.me/?text=${url}`}
+                      title="Share to Whatsapp"
+                    >
+                      <i className="ion-social-whatsapp"></i>
+                    </a>
+                    <a
+                      className="yearView__share__link"
+                      href={`https://twitter.com/intent/tweet?text=Most+common+year+for+my+music+is+${year}&url=${encodeURI(
+                        url
+                      )}`}
+                      rel="noopener noreferrer"
+                      title="Share to Twitter"
+                    >
+                      <i className="ion-social-twitter" />
+                    </a>
+                    <a
+                      className="yearView__share__link"
+                      href={`https://www.facebook.com/sharer.php?u=${encodeURI(
+                        url
+                      )}&t=Most+common+year+for+my+music+is+${year}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Share to Facebook"
+                    >
+                      <i className="ion-social-facebook" />
+                    </a>
+                  </div>
                 </div>
               </>
             )}
