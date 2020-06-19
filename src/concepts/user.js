@@ -2,6 +2,7 @@
 
 import { fromJS } from 'immutable';
 import { apiCall } from '../services/api';
+import { createSelector } from 'reselect';
 
 // # Action Types
 const FETCH_USER_PROFILE = 'user/FETCH_USER_PROFILE';
@@ -10,6 +11,8 @@ const FETCH_USER_PROFILE_SUCCESS = 'user/FETCH_USER_PROFILE_SUCCESS';
 
 // # Selectors
 export const getUser = state => state.user.get('user');
+
+export const getUserId = createSelector(getUser, user => user.get('id'));
 
 // # Action Creators
 export const fetchUserProfile = () =>
