@@ -58,7 +58,12 @@ const YearView = props => {
           </h1>
 
           <div className="yearView__content">
-            {randomFact && <p className="yearView__fact">{randomFact}</p>}
+            {randomFact && (
+              <p className="yearView__fact">
+                Did you know that in year {year} {randomFact.charAt(0).toLowerCase()}
+                {randomFact.slice(1)}
+              </p>
+            )}
 
             <figure className="yearView__img">
               <img
