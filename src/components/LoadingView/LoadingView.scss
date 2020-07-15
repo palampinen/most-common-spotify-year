@@ -20,12 +20,20 @@
   }
 
   .spinner {
-    stroke: #fffdea;
-    fill: #fffdea;
+    width: 50px;
+    margin-bottom: 1rem;
 
-    svg {
-      width: 10vmax;
-      height: 10vmax;
+    @media (min-width: $breakpoint-small) {
+      width: 100px;
+      margin-bottom: 0rem;
     }
+
+    // stroke: #fffdea;
+    // fill: #fffdea;
+
+    // svg {
+    //   width: 10vmax;
+    //   height: 10vmax;
+    // }
   }
 }
