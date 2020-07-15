@@ -49,13 +49,16 @@ const YearView = props => {
     <>
       <Helmet>
         <title>Obscurify. | Year {year}</title>
-        <meta name="description" content="Obscurify. Find out your musical year." />
+        <meta name="description" content="Obscurify. Find out your main Music Year 🎵" />
         <meta
           property="og:image"
           content={mainYearCoverUrl || 'https://picsum.photos/500/500'}
         ></meta>
-        <meta property="og:title" content="Obscurify."></meta>
-        <meta property="og:description" content="Obscurify. Find out your musical year."></meta>
+        <meta property="og:title" content="Obscurify. Find out your main Music Year 🎵"></meta>
+        <meta
+          property="og:description"
+          content="Obscurify app will analyze your musical taste from Spotify and give you year that you have most music."
+        ></meta>
       </Helmet>
 
       {!!detailYear && (
