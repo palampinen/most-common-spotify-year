@@ -4,6 +4,7 @@ const config = {
   SPOTIFY_AUTH_SCOPES: 'playlist-read-private user-library-read',
   SPOTIFY_CLIENT_ID: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
   CALLBACK_URL: `${window.location.origin}/callback`,
+  GOOGLE_ANALYTICS_ID: process.env.REACT_APP_GOOGLE_ANALYTICS_ID,
 
   // Default Country used for artists top track query
   // https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-top-tracks/

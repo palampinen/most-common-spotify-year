@@ -11,6 +11,9 @@ import LoginView from 'containers/LoginView';
 import Callback from 'containers/Callback';
 import YearView from 'components/YearView';
 import ScrollTopRoute from 'components/ScrollTopRoute';
+import { initializeAnalytics } from 'services/analytics';
+
+initializeAnalytics();
 
 const App = () => (
   <Provider store={store}>
