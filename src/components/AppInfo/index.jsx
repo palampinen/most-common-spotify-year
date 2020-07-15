@@ -41,15 +41,15 @@ class AppInfo extends Component {
             target="_blank"
             rel="noopener noreferrer"
             href="https://developer.spotify.com/documentation/general/guides/authorization-guide/"
-            class="read-more"
+            className="read-more"
           >
             Read more about Spotify scopes
           </a>
           <div className="app-info__buttons">
             <Link className="btn btn-primary" to="/login">
-              OK, got it{' '}
+              OK, that's fine{' '}
               <span aria-label="OK" role="img">
-                👌🏻
+                🙏
               </span>
             </Link>
           </div>
