@@ -13,57 +13,97 @@ import { createSelector } from 'reselect';
 import history from 'services/history';
 import { uniqBy } from 'services/immutable';
 import { getUserId } from 'concepts/user';
+import { getSavedAlbumsTracks, fetchAllSavedAlbums } from 'concepts/saved-albums';
+import {
+  getPlaylists,
+  getPlaylistsTracks,
+  fetchAllPlaylists,
+  fetchAllPlaylistsTracks,
+} from 'concepts/saved-playlists';
+import { getSavedTracks, fetchAllSavedTracks } from 'concepts/saved-tracks';
 
 import FamousComposers from 'constants/FamousComposers';
+import { FROM_SAVED_TRACKS, FROM_SAVED_ALBUM, FROM_PLAYLIST } from 'constants/TrackSources';
 
 // # Action Types
-const FETCH_PLAYLISTS = 'userLibrary/FETCH_PLAYLISTS';
-const FETCH_PLAYLISTS_SUCCESS = 'userLibrary/FETCH_PLAYLISTS_SUCCESS';
-const FETCH_PLAYLISTS_READY = 'userLibrary/FETCH_PLAYLISTS_READY';
-
-const FETCH_PLAYLIST_TRACKS = 'userLibrary/FETCH_PLAYLIST_TRACKS';
-const FETCH_PLAYLIST_TRACKS_SUCCESS = 'userLibrary/FETCH_PLAYLIST_TRACKS_SUCCESS';
-const FETCH_PLAYLISTS_TRACKS_READY = 'userLibrary/FETCH_PLAYLISTS_TRACKS_READY';
-
-const FETCH_SAVED_TRACKS = 'userLibrary/FETCH_SAVED_TRACKS';
-const FETCH_SAVED_TRACKS_SUCCESS = 'userLibrary/FETCH_SAVED_TRACKS_SUCCESS';
-const FETCH_SAVED_TRACKS_READY = 'userLibrary/FETCH_SAVED_TRACKS_READY';
-
 const SEARCH_TRACK = 'userLibrary/SEARCH_TRACK';
 // const SEARCH_TRACK_SUCCESS = 'userLibrary/SEARCH_TRACK_SUCCESS';
 const SEARCH_TRACK_READY = 'userLibrary/SEARCH_TRACK_READY';
 
-// const SEARCH_COMPILATION_TRACKS = 'userLibrary/SEARCH_COMPILATION_TRACKS';
-// const SEARCH_COMPILATION_TRACKS_SUCCESS = 'userLibrary/SEARCH_COMPILATION_TRACKS_SUCCESS';
-// const SEARCH_COMPILATION_TRACKS_READY = 'userLibrary/SEARCH_COMPILATION_TRACKS_READY';
-
 // # Selectors
-export const getPlaylists = state => state.userLibrary.get('playlists');
-export const getPlaylistsTracks = state => state.userLibrary.get('playlistsTracks');
-export const getSavedTracks = state => state.userLibrary.get('savedTracks');
+
 export const getCompilationReplacementTracks = state =>
   state.userLibrary.get('compilationReplacementTracks');
 
-// 1981, 1981-12 or 1981-12-15
+// Date can be in following formats: 1981, 1981-12 or 1981-12-15
 const getYear = date => first(split(date, '-'));
 
+// Key by albums tracks with "track" for consistent behavior
+const getSavedAlbumsTracksKeyedByTrack = createSelector(getSavedAlbumsTracks, tracks =>
+  tracks.reduce((sum, track) => sum.push(fromJS({ track })), List([]))
+);
+
 const getAllUsersTracks = createSelector(
+  getPlaylists,
   getPlaylistsTracks,
   getSavedTracks,
+  getSavedAlbumsTracksKeyedByTrack,
   getUserId,
-  (playlistTracks, savedTracks, userId) => {
-    const allPlaylistTracks = playlistTracks.reduce((sum, playlist) => {
-      return sum.concat(playlist);
+  (playlists, playlistTracks, savedTracks, savedAlbumsTracks, userId) => {
+    // Playlist tracks
+    const playlistTracksWithSource = playlistTracks.reduce((sum, tracks, playlistId) => {
+      const playlist = playlists.find(playlist => playlist.get('id') === playlistId) || Map();
+
+      const ownPlaylistTracks = tracks
+        .filter(track => {
+          const addedByUserId = track.getIn(['added_by', 'id']);
+          return addedByUserId === '' || addedByUserId === userId;
+        })
+        .map(track =>
+          track.setIn(
+            ['track', 'source'],
+            Map({
+              type: FROM_PLAYLIST,
+              name: playlist.get('name'),
+              id: playlistId,
+              uri: playlist.get('uri'),
+            })
+          )
+        );
+
+      return sum.concat(ownPlaylistTracks);
     }, List([]));
 
-    const ownPlaylistTracks = allPlaylistTracks.filter(track => {
-      const addedByUserId = track.getIn(['added_by', 'id']);
-      return addedByUserId === '' || addedByUserId === userId;
-    });
+    // Saved tracks
+    const savedTracksWithSource = savedTracks.map(track =>
+      track.setIn(
+        ['track', 'source'],
+        Map({
+          type: FROM_SAVED_TRACKS,
+          uri: 'https://open.spotify.com/collection/tracks',
+        })
+      )
+    );
 
+    // Saved albums
+    const savedAlbumsTracksWithSource = savedAlbumsTracks.map(track =>
+      track.setIn(
+        ['track', 'source'],
+        Map({
+          type: FROM_SAVED_ALBUM,
+          name: track.getIn(['track', 'album', 'name']),
+          uri: track.getIn(['track', 'album', 'uri']),
+        })
+      )
+    );
+
+    // Combine unique tracks
     return (
-      uniqBy(ownPlaylistTracks.concat(savedTracks), 'track.id')
-        // remove old famous composers because these albums do "correct date"
+      uniqBy(
+        savedTracksWithSource.concat(playlistTracksWithSource, savedAlbumsTracksWithSource),
+        'track.id'
+      )
+        // remove old famous composers because these albums do not have "correct date" for this analysis
         .filter(
           track => FamousComposers.indexOf(track.getIn(['track', 'artists', 0, 'name'])) === -1
         )
@@ -76,7 +116,26 @@ const getAllUsersTracks = createSelector(
 const getAllTracks = createSelector(
   getAllUsersTracks,
   getCompilationReplacementTracks,
-  (tracks, replacementTracks) => tracks.concat(replacementTracks)
+  (usersTracks, replacementTracks) => {
+    const replacementTracksWithSource = replacementTracks.map(track =>
+      track.set(
+        'source',
+        (
+          usersTracks.find(usersTrack => usersTrack.get('id') === track.get('originalTrackId')) ||
+          Map()
+        ).get('source')
+      )
+    );
+
+    return usersTracks.concat(replacementTracksWithSource);
+
+    // const originalTrackIds = replacementTracksWithSource.map(t => t.get('originalTrackId'));
+    // const usersTracksWithoutReplaced = usersTracks.filter(
+    //   t => originalTrackIds.indexOf(t.get('id')) < 0
+    // );
+
+    // return usersTracksWithoutReplaced.concat(replacementTracksWithSource);
+  }
 );
 
 const calculateYearOccurrences = createSelector(getAllTracks, allTracks => {
@@ -84,7 +143,7 @@ const calculateYearOccurrences = createSelector(getAllTracks, allTracks => {
     track => track.getIn(['album', 'album_type']) !== 'compilation'
   );
 
-  const yearOccurrences = validTracks.reduce((sum, track) => {
+  return validTracks.reduce((sum, track) => {
     const releaseYear = getYear(track.getIn(['album', 'release_date']));
 
     if (isNil(releaseYear)) {
@@ -93,8 +152,6 @@ const calculateYearOccurrences = createSelector(getAllTracks, allTracks => {
 
     return sum.setIn([releaseYear], (sum.get(releaseYear) || 0) + 1);
   }, Map());
-
-  return yearOccurrences;
 });
 
 export const getYearlyTracks = createSelector(getAllTracks, allTracks => {
@@ -102,13 +159,11 @@ export const getYearlyTracks = createSelector(getAllTracks, allTracks => {
     track => track.getIn(['album', 'album_type']) !== 'compilation'
   );
 
-  const tracksByYear = validTracks.reduce((sum, track) => {
+  return validTracks.reduce((sum, track) => {
     const releaseYear = getYear(track.getIn(['album', 'release_date']));
 
     return sum.set(releaseYear, (sum.get(releaseYear) || List()).push(track));
   }, Map());
-
-  return tracksByYear;
 });
 
 export const getYearsWithTracks = createSelector(getYearlyTracks, tracksByYear =>
@@ -153,104 +208,13 @@ export const getRandomCoverFromMainYear = createSelector(
 );
 
 // # Action Creators
-export const fetchUserPlaylists = params => dispatch => {
-  return dispatch(
-    apiCall({
-      type: FETCH_PLAYLISTS,
-      url: `/me/playlists`,
-      params,
-    })
-  );
-};
-
-// Since fetching playlists is limited to 50 per request
-// we need to get playlists in batches
-const MAX_PLAYLISTS_PER_REQUEST = 50;
-const fetchAllPlaylists = () => dispatch =>
-  dispatch(fetchUserPlaylists({ limit: MAX_PLAYLISTS_PER_REQUEST }))
-    .then(response => {
-      const totalPlaylists = get(response, ['payload', 'data', 'total']);
-
-      if (totalPlaylists > MAX_PLAYLISTS_PER_REQUEST) {
-        const remainingPlaylists = totalPlaylists - MAX_PLAYLISTS_PER_REQUEST;
-        const amountOfRequestsNeeded = Math.ceil(remainingPlaylists / MAX_PLAYLISTS_PER_REQUEST);
-
-        return Promise.all(
-          times(amountOfRequestsNeeded, index =>
-            dispatch(
-              fetchUserPlaylists({
-                limit: MAX_PLAYLISTS_PER_REQUEST,
-                offset: (index + 1) * MAX_PLAYLISTS_PER_REQUEST,
-              })
-            )
-          )
-        );
-      }
-    })
-    .then(() => dispatch({ type: FETCH_PLAYLISTS_READY }));
-
-const fetchPlaylistTracks = playlistId => dispatch =>
-  dispatch(
-    apiCall({
-      type: FETCH_PLAYLIST_TRACKS,
-      url: `/playlists/${playlistId}`,
-      params: {
-        fields:
-          'id,tracks.items(added_by(id),track(id,uri,name,artists(name),album(id,album_type,release_date,images)))',
-      },
-    })
-  );
-
-const fetchAllPlaylistsTracks = () => (dispatch, getState) => {
-  const playlists = getPlaylists(getState());
-  const playlistsIds = playlists.map(playlist => playlist.get('id'));
-
-  return Promise.all(playlistsIds.toJS().map(id => dispatch(fetchPlaylistTracks(id)))).then(() =>
-    dispatch({ type: FETCH_PLAYLISTS_TRACKS_READY })
-  );
-};
-
-const fetchSavedTracks = params => dispatch =>
-  dispatch(
-    apiCall({
-      type: FETCH_SAVED_TRACKS,
-      url: `/me/tracks`,
-      params,
-    })
-  );
-
-// Since fetching playlists is limited to 50 per request
-// we need to get playlists in batches
-const MAX_SAVED_TRACKS_PER_REQUEST = 50;
-const fetchAllSavedTracks = () => dispatch =>
-  dispatch(fetchSavedTracks({ limit: MAX_SAVED_TRACKS_PER_REQUEST }))
-    .then(response => {
-      const totalPlaylists = get(response, ['payload', 'data', 'total']);
-
-      if (totalPlaylists > MAX_SAVED_TRACKS_PER_REQUEST) {
-        const remainingPlaylists = totalPlaylists - MAX_SAVED_TRACKS_PER_REQUEST;
-        const amountOfRequestsNeeded = Math.ceil(remainingPlaylists / MAX_SAVED_TRACKS_PER_REQUEST);
-
-        return Promise.all(
-          times(amountOfRequestsNeeded, index =>
-            dispatch(
-              fetchSavedTracks({
-                limit: MAX_SAVED_TRACKS_PER_REQUEST,
-                offset: (index + 1) * MAX_SAVED_TRACKS_PER_REQUEST,
-              })
-            )
-          )
-        );
-      }
-    })
-    .then(() => dispatch({ type: FETCH_SAVED_TRACKS_READY }));
-
-const searchTrack = track => dispatch => {
-  const artistName = (track.getIn(['artists']) || List())
+const searchTrack = originalTrack => dispatch => {
+  const artistName = (originalTrack.getIn(['artists']) || List())
     .map(artist => artist.get('name'))
     .join(' ');
 
-  const trackName = track.getIn(['name']);
+  const trackName = originalTrack.getIn(['name']);
+  const originalTrackId = originalTrack.get('id');
 
   if (!trackName || !artistName) {
     return Promise.resolve();
@@ -260,7 +224,7 @@ const searchTrack = track => dispatch => {
     apiCall({
       type: SEARCH_TRACK,
       url: `/search`,
-      params: { q: `${artistName} ${trackName}`, type: 'track', limit: 3 },
+      params: { q: `${artistName} ${trackName}`, type: 'track', limit: 5 },
     })
   )
     .then(result => {
@@ -278,7 +242,7 @@ const searchTrack = track => dispatch => {
     })
     .then(track => {
       if (track) {
-        return dispatch({ type: SEARCH_TRACK_READY, payload: track });
+        return dispatch({ type: SEARCH_TRACK_READY, payload: { ...track, originalTrackId } });
       }
 
       return Promise.resolve();
@@ -340,69 +304,18 @@ export const fetchMostCommonYear = () => dispatch => {
   return dispatch(fetchAllPlaylists())
     .then(() => dispatch(fetchAllPlaylistsTracks()))
     .then(() => dispatch(fetchAllSavedTracks()))
+    .then(() => dispatch(fetchAllSavedAlbums()))
     .then(() => dispatch(fetchCompilationAlbumTracks()))
     .then(() => dispatch(redirectToCorrectYearPage()));
 };
 
 // # Reducer
 const initialState = fromJS({
-  isLoadingPlaylists: false,
-  isLoadingPlaylistsTracks: false,
-  isLoadingSavedTracks: false,
-
-  playlists: [],
-  playlistsTracks: {},
-  savedTracks: [],
   compilationReplacementTracks: [],
 });
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_PLAYLISTS: {
-      return state.set('isLoadingPlaylists', true);
-    }
-
-    case FETCH_PLAYLISTS_SUCCESS: {
-      return state.set(
-        'playlists',
-        state.get('playlists').concat(fromJS(action.payload.data.items))
-      );
-    }
-
-    case FETCH_PLAYLISTS_READY: {
-      return state.set('isLoadingPlaylists', false);
-    }
-
-    case FETCH_PLAYLIST_TRACKS: {
-      return state.set('isLoadingPlaylistsTracks', true);
-    }
-
-    case FETCH_PLAYLIST_TRACKS_SUCCESS: {
-      return state.setIn(
-        ['playlistsTracks', action.payload.data.id],
-        fromJS(get(action, ['payload', 'data', 'tracks', 'items']))
-      );
-    }
-
-    case FETCH_PLAYLISTS_TRACKS_READY: {
-      return state.set('isLoadingPlaylistsTracks', false);
-    }
-
-    case FETCH_SAVED_TRACKS: {
-      return state.set('isLoadingSavedTracks', true);
-    }
-
-    case FETCH_SAVED_TRACKS_SUCCESS: {
-      return state.set(
-        'savedTracks',
-        state.get('savedTracks').concat(fromJS(action.payload.data.items))
-      );
-    }
-
-    case FETCH_SAVED_TRACKS_READY: {
-      return state.set('isLoadingSavedTracks', false);
-    }
-
     case SEARCH_TRACK_READY: {
       return state.set(
         'compilationReplacementTracks',

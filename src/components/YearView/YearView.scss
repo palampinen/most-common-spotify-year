@@ -85,9 +85,15 @@
   }
 }
 
-.yearView__fact {
+.yearView .yearView__fact {
   animation: fade-in 0.5s;
   min-height: 1rem;
+  opacity: 0.8;
+  font-size: 0.9rem;
+
+  @media (min-width: 600px) {
+    font-size: 1.75vmax;
+  }
 }
 
 .yearView__img {
@@ -161,6 +167,14 @@
   margin: 5rem 0 0;
 }
 
+.yearView__share__url {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  z-index: 0;
+  position: absolute;
+}
+
 .yearView__share__buttons {
   text-align: center;
   margin: 1em auto 1em;
@@ -177,6 +191,10 @@
   color: rgba(0, 0, 0, 0.8);
   color: $gradient-2;
 
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -188,6 +206,10 @@
   img {
     max-width: 40px;
     float: left;
+  }
+
+  .icon-success {
+    animation: scale-in 0.2s;
   }
 
   &:hover {

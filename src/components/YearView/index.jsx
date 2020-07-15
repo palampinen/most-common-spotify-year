@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import get from 'lodash/get';
+import random from 'lodash/random';
+import replace from 'lodash/replace';
+
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -12,29 +15,34 @@ import {
 } from 'concepts/user-library';
 import Modal from 'components/Modal';
 import TracksFromYear from 'components/TracksFromYear';
+import YearlyFacts from 'constants/YearlyFacts';
 import './YearView.scss';
 
 const YearView = props => {
   const [randomFact, setRandomFact] = useState('');
   const [detailYear, setYearDetail] = useState(null);
-
-  useEffect(() => {
-    fetch('https://uselessfacts.jsph.pl/random.json?language=en')
-      .then(response => response.json())
-      .then(data => setRandomFact(data.text));
-  }, []);
-
+  const [factIndex, setFactIndex] = useState(null);
+  const [isCopiedOk, setCopiedOk] = useState(false);
   const year = get(props, ['match', 'params', 'year']);
-  const url = window.location.href;
+  const { urlFactIndex } = props;
+  const copyUrlRef = useRef();
+
+  // Set random fact or get from URL
+  useEffect(() => {
+    const facts = get(YearlyFacts, [year, 'facts']);
+    if (facts && facts.length) {
+      const factIndex =
+        urlFactIndex && urlFactIndex < facts.length ? urlFactIndex : random(facts.length - 1);
+
+      setFactIndex(factIndex);
+      setRandomFact(facts[factIndex]);
+    }
+  }, [year]);
+
+  const baseUrl = replace(window.location.href, '#', '');
+  const url = urlFactIndex ? baseUrl : `${baseUrl}?fact=${factIndex}`;
   const { yearlyTrackCounts, tracksByYears, yearsWithTracks, mainYearCoverUrl } = props;
   const isSharedPage = yearlyTrackCounts.isEmpty();
-
-  // To ease development
-  // useEffect(() => {
-  //   if (process.env.NODE_ENV === 'development' && isSharedPage) {
-  //     props.fetchMostCommonYear();
-  //   }
-  // }, []);
 
   return (
     <>
@@ -58,12 +66,7 @@ const YearView = props => {
           </h1>
 
           <div className="yearView__content">
-            {randomFact && (
-              <p className="yearView__fact">
-                Did you know that in year {year} {randomFact.charAt(0).toLowerCase()}
-                {randomFact.slice(1)}
-              </p>
-            )}
+            {randomFact && <p className="yearView__fact">{randomFact}</p>}
 
             <figure className="yearView__img">
               <img
@@ -95,6 +98,7 @@ const YearView = props => {
                           style={{ width: `${yearlyCount.get('percentage')}%` }}
                         >
                           {yearlyCount.get('count')}
+                          {yearlyCount.get('year') === year ? ' ⭐️' : ''}
                         </div>
                       </div>
                     </div>
@@ -104,6 +108,43 @@ const YearView = props => {
                 <div className="yearView__share">
                   <h3>Share your year</h3>
                   <div className="yearView__share__buttons">
+                    <div ref={copyUrlRef} className="yearView__share__url">
+                      {url}
+                    </div>
+                    <button
+                      className="yearView__share__link"
+                      onClick={() => {
+                        const copyTextElement = copyUrlRef.current;
+                        const sel = window.getSelection();
+                        let range;
+
+                        if (document.selection) {
+                          range = document.body.createTextRange();
+                          range.moveToElementText(copyTextElement);
+                          range.select();
+                        } else if (sel) {
+                          range = document.createRange();
+                          range.selectNodeContents(copyTextElement);
+                          sel.removeAllRanges();
+                          sel.addRange(range);
+                        }
+
+                        document.execCommand('copy');
+                        setCopiedOk(true);
+
+                        setTimeout(() => {
+                          setCopiedOk(false);
+                        }, 3000);
+                      }}
+                      title="Copy to clipboard"
+                    >
+                      {isCopiedOk ? (
+                        <i className="ion-checkmark-round icon-success"></i>
+                      ) : (
+                        <i className="ion-link"></i>
+                      )}
+                    </button>
+
                     <a
                       className="yearView__share__link"
                       href={`https://wa.me/?text=${url}`}
@@ -159,8 +200,11 @@ const mapStateToProps = state => ({
   tracksByYears: getYearlyTracks(state),
   yearsWithTracks: getYearsWithTracks(state),
   mainYearCoverUrl: getRandomCoverFromMainYear(state),
+  urlFactIndex: get(state, ['router', 'location', 'query', 'fact']),
 });
 
 const mapDispatchToProps = { fetchMostCommonYear };
+
+// const YearViewWithRouter = withRouter(YearView);
 
 export default connect(mapStateToProps, mapDispatchToProps)(YearView);
