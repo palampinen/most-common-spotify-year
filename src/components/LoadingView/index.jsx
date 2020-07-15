@@ -1,8 +1,12 @@
 import React from 'react';
 import './LoadingView.scss';
 
+import Loader from 'assets/816.png';
+
 const LoadingView = () => (
   <div className="loading">
+    <img src={Loader} className="spinner" />
+    {/*
     <div className="spinner">
       <svg viewBox="0 0 64 64">
         <g fill="none" fillRule="evenodd" strokeWidth="3">
@@ -47,7 +51,9 @@ const LoadingView = () => (
         </g>
       </svg>
     </div>
-    <h2>Analyzing your musical taste…</h2>
+    </div>
+  */}
+    <h2>Analyzing your musical taste</h2>
   </div>
 );
 

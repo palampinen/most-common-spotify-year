@@ -10,8 +10,13 @@
   text-align: center;
 
   h2 {
+    font-size: 1.25em;
     color: #fffdea;
     text-align: center;
+
+    @media (min-width: $breakpoint-small) {
+      font-size: 2em;
+    }
   }
 
   .spinner {
