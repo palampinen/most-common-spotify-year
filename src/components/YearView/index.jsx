@@ -37,7 +37,7 @@ const YearView = props => {
       setFactIndex(factIndex);
       setRandomFact(facts[factIndex]);
     }
-  }, [year]);
+  }, [urlFactIndex, year]);
 
   const baseUrl = replace(window.location.href, '#', '');
   const url = urlFactIndex ? baseUrl : `${baseUrl}?fact=${factIndex}`;

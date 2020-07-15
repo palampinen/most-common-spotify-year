@@ -5,7 +5,7 @@ import Loader from 'assets/816.png';
 
 const LoadingView = () => (
   <div className="loading">
-    <img src={Loader} className="spinner" />
+    <img alt="Loading" src={Loader} className="spinner" />
     {/*
     <div className="spinner">
       <svg viewBox="0 0 64 64">
