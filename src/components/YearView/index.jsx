@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet';
 import get from 'lodash/get';
 import random from 'lodash/random';
 import replace from 'lodash/replace';
@@ -46,6 +47,17 @@ const YearView = props => {
 
   return (
     <>
+      <Helmet>
+        <title>Obscurify. | Year {year}</title>
+        <meta name="description" content="Obscurify. Find out your musical year." />
+        <meta
+          property="og:image"
+          content={mainYearCoverUrl || 'https://picsum.photos/500/500'}
+        ></meta>
+        <meta property="og:title" content="Obscurify."></meta>
+        <meta property="og:description" content="Obscurify. Find out your musical year."></meta>
+      </Helmet>
+
       {!!detailYear && (
         <TracksFromYear
           tracksByYears={tracksByYears}
