@@ -20,7 +20,7 @@ class LoginView extends Component {
         <div className="login">
           <div className="login__content">
             <span className="login__app-icon" onClick={this.toggleAppInfo}>
-              Obscurify<span className="login__app-icon__dot">.</span>
+              Yeardrums
             </span>
 
             <h1 className="login__title">How old is your musical taste?</h1>

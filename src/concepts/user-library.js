@@ -138,11 +138,15 @@ const getAllTracks = createSelector(
   }
 );
 
-const calculateYearOccurrences = createSelector(getAllTracks, allTracks => {
+const getValidTracks = createSelector(getAllTracks, allTracks => {
   const validTracks = allTracks.filter(
     track => track.getIn(['album', 'album_type']) !== 'compilation'
   );
 
+  return uniqBy(validTracks, 'id');
+});
+
+const calculateYearOccurrences = createSelector(getValidTracks, validTracks => {
   return validTracks.reduce((sum, track) => {
     const releaseYear = getYear(track.getIn(['album', 'release_date']));
 
@@ -154,11 +158,7 @@ const calculateYearOccurrences = createSelector(getAllTracks, allTracks => {
   }, Map());
 });
 
-export const getYearlyTracks = createSelector(getAllTracks, allTracks => {
-  const validTracks = allTracks.filter(
-    track => track.getIn(['album', 'album_type']) !== 'compilation'
-  );
-
+export const getYearlyTracks = createSelector(getValidTracks, validTracks => {
   return validTracks.reduce((sum, track) => {
     const releaseYear = getYear(track.getIn(['album', 'release_date']));
 

@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import get from 'lodash/get';
+import random from 'lodash/random';
 import { List } from 'immutable';
 import classnames from 'classnames';
 
+import YearlyFacts from 'constants/YearlyFacts';
 import { ReactComponent as PlayIcon } from 'assets/play-icon.svg';
 import Modal from 'components/Modal';
+import YearImage from 'components/YearImage';
 import styles from './TracksFromYear.module.scss';
 import { FROM_SAVED_TRACKS, FROM_SAVED_ALBUM, FROM_PLAYLIST } from 'constants/TrackSources';
 
@@ -36,9 +40,22 @@ const getSourceInformation = track => {
   return null;
 };
 
-const TracksFromYear = ({ availableYears, year, tracksByYears, clearYear, setYear }) => {
+const TracksFromYear = ({
+  availableYears,
+  year,
+  tracksByYears,
+  clearYear,
+  setYear,
+  mainYear,
+  mainFactIndex,
+}) => {
+  const [randomFact, setRandomFact] = useState('');
+  const [factIndex, setFactIndex] = useState(null);
+
   const tracksByYear = tracksByYears.get(year);
   const yearPosition = availableYears.indexOf(year);
+
+  console.log(tracksByYears.toJS());
 
   window.onpopstate = function (event) {
     event.preventDefault && event.preventDefault();
@@ -48,6 +65,16 @@ const TracksFromYear = ({ availableYears, year, tracksByYears, clearYear, setYea
       window.onpopstate = null;
     });
   };
+
+  useEffect(() => {
+    const facts = get(YearlyFacts, [year, 'facts']);
+    if (facts && facts.length) {
+      const factIndex = year === mainYear ? mainFactIndex : random(facts.length - 1);
+
+      setFactIndex(factIndex);
+      setRandomFact(facts[factIndex]);
+    }
+  }, [mainYear, mainFactIndex, year]);
 
   return (
     <Modal className={styles.trackViewModal}>
@@ -64,7 +91,7 @@ const TracksFromYear = ({ availableYears, year, tracksByYears, clearYear, setYea
           >
             <i className={classnames('ion-arrow-left-b', styles.icon, styles.iconLeft)}></i>
           </button>
-          <span className={styles.titleText}>Tracks from Year {year}</span>
+          <span className={styles.titleText}>From Year {year}</span>
           <button
             disabled={yearPosition >= availableYears.size - 1}
             className={styles.navButton}
@@ -74,11 +101,27 @@ const TracksFromYear = ({ availableYears, year, tracksByYears, clearYear, setYea
           </button>
         </h3>
 
+        <div className={styles.yearRandomContent}>
+          <figure className={styles.yearRandomFigure}>
+            <YearImage
+              alt={`Image from year ${year}`}
+              imageId={`${year}-${factIndex + 1}`}
+              className={styles.yearRandomImage}
+            />
+          </figure>
+
+          {randomFact && <p className={styles.yearRandomFact}>{randomFact}</p>}
+        </div>
+
         <div className={styles.trackList}>
           {tracksByYear
             .sortBy(track => track.getIn(['artists', 0, 'name']))
             .map(track => (
-              <a className={styles.track} href={track.getIn(['uri'])} key={track.getIn(['id'])}>
+              <a
+                className={styles.track}
+                href={track.getIn(['uri'])}
+                key={`${year}-${track.getIn(['id'])}`}
+              >
                 <figure className={styles.img}>
                   <img alt="Album cover" src={track.getIn(['album', 'images', 2, 'url'])} />
                   <PlayIcon className={styles.playIcon} />

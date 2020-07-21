@@ -22,7 +22,7 @@ class AppView extends Component {
         <div className="App-container">
           <div className="App-content">
             <Route exact path={`${match.url}`} component={LoadingView} />
-            <ScrollTopRoute exact path={`${match.url}app`} component={AppHelp} />
+            <ScrollTopRoute exact path={`${match.url}about`} component={AppHelp} />
           </div>
         </div>
       </div>

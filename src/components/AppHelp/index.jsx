@@ -1,86 +1,40 @@
 import React, { Component } from 'react';
 import './AppHelp.scss';
+import Modal from 'components/Modal';
 
 class Apphelp extends Component {
   render() {
     return (
-      <div>
+      <Modal className="app-help-modal">
         <div className="app-help">
-          <h1>Replayify</h1>
+          <button className="back-button" onClick={this.props.onBack}>
+            <i className="ion-arrow-left-c icon"></i> Back
+          </button>
+          <h1>Yeardrums</h1>
           <p>
-            With Replayify you can find your old Spotify gems. Some of the songs that you may have
-            already forgotten. Perhaps an old crush that you played repeatedly during summer weeks
-            before you had to move on.
+            Yeardrums is an app developed/produced by Pasi Lampinen and Jack Spurr as a means to
+            give Spotify users insight on their musical library and some fun history facts about
+            each year.
           </p>
           <p>
-            Refresh your memories and create Spotify playlists from your favorite Tracks and
-            Artists.
+            Yeardrums covers libraries with songs from 1945-2020. The song's accounted for when
+            calculating a user's year must be in the user's playlists or saved tracks. Certain
+            albums are listed as Compilation where songs in that album were not released in the year
+            the album states. In this case Spotify's search API will try to provide the correct year
+            for those songs, but will not be 100% accurate and some songs may not be included in the
+            calculation.
           </p>
-          <h3>Keep replayin' replayin' replayin'</h3>
-          Disclaimer: Since this app encourages you to listen your old favorites, this will keep
-          your music taste and listening habits static. Rememeber to listen also new music once in a
-          while, so you'll find new favorites. And when you need a bit of nostalgia again, here you
-          will find it!
-          <h3>Spotify access</h3>
           <p>
-            Application requires a Spotify account. It also needs access to your Spotify account.
-            Application works as client side only and your Spotify data is not stored.
+            Each fact has been verified, but of course please check out each one on your own. The
+            images used are for educational purposes and are protected under the Fair Use Copyright
+            Act of 1976. Yeardrums is not affiliated and has no partnership with Spotify in any way
+            shape or form.
           </p>
-          <h3>
-            I logged in with wrong Spotify account <span role="img" arial-label="OMG" />
-            😬
-          </h3>
           <p>
-            No worries, just go to{' '}
-            <a href="http://accounts.spotify.com/" target="_blank" rel="noopener noreferrer">
-              accounts.spotify.com
-            </a>{' '}
-            and press Log out -button. Then open{' '}
-            <a href="http://replayify.com/login">replayify.com/login</a> and sign in with different
-            account.
+            <strong>We hope you enjoy reeling in the years!</strong>
           </p>
-          <div className="app-help__footer">
-            <a
-              className="footer__link footer__link--replayify"
-              href="https://replayify.com"
-              title="Replayify App"
-            >
-              <img src={require('../../assets/images/replayify-icon.png')} alt="Replayify" />
-            </a>
-            <a
-              className="footer__link"
-              href="https://github.com/palampinen/replayify"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Replayify on Github"
-            >
-              <i className="ion-social-github" />
-            </a>
-            <a
-              className="footer__link"
-              href="https://spiceprogram.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Sponsored by Spice Program"
-            >
-              <img src={require('../../assets/images/chilicorn.png')} alt="Spice Program" />
-            </a>
-            <a
-              className="footer__link"
-              href="https://www.producthunt.com/posts/replayify"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Replayify on Product Hunt"
-            >
-              <img
-                className="img--ph"
-                src={require('../../assets/images/product-hunt-logo.png')}
-                alt="Product Hunt"
-              />
-            </a>
-          </div>
         </div>
-      </div>
+      </Modal>
     );
   }
 }

@@ -12,12 +12,10 @@ class AppInfo extends Component {
     return (
       <Modal>
         <div className="app-info">
-          <h1 className="appTitle">
-            Obscurify<span className="green">.</span>
-          </h1>
+          <h1 className="appTitle">Yeardrums</h1>
           <p>
-            This is an Application to find out how old music you tend to listen. It will analyze all
-            release dates of your saved and playlist tracks and show which year appears the most.
+            This is an Application to give Spotify users insight on their musical library and some
+            fun history facts about each year.
           </p>
           <h3>Required Spotify access</h3>
           <p>

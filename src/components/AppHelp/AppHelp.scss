@@ -1,11 +1,25 @@
 @import 'styles/variables.scss';
 
+.app-help-modal {
+  z-index: 102;
+}
+
 .app-help {
   display: block;
   max-width: $breakpoint-small * 0.8;
   margin: 3em auto;
 
   animation: mic-drop 0.75s;
+
+  color: #fff;
+
+  p {
+    color: rgba(255, 255, 255, 0.95);
+
+    strong {
+      color: #fff;
+    }
+  }
 }
 
 .app-help__buttons {
@@ -20,55 +34,25 @@
   text-align: left;
 }
 
-.app-help__footer {
-  text-align: center;
-  margin: 6em auto 1em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.back-button {
+  color: #fff;
+  font-weight: bold;
+  background: transparent;
+  border: 2px solid #fff;
+  border-radius: 30px;
+  padding: 0.5rem 1rem;
 
-.footer__link {
-  font-size: 40px;
-  line-height: 40px;
-  width: 40px;
-  height: 40px;
-  color: $dark-grey;
+  cursor: pointer;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin: 0em 0.4em;
-  opacity: 0.8;
-  transition: all 0.15s;
-  transform-origin: 50% 50%;
-
-  img {
-    max-width: 40px;
-    float: left;
-    &.img--ph {
-      max-width: 36px;
-    }
-  }
-
-  &.footer__link--replayify {
-    border-radius: 50%;
-    background: rgba(black, 0.03);
-    min-width: 40px;
-    img {
-      max-width: 30px;
-    }
+  .icon {
+    margin: 0 2px 0 -2px;
   }
 
   &:hover {
-    opacity: 1;
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
   }
-}
 
-@media (min-width: $breakpoint-small) {
-  .footer__link {
-    margin: 0em 0.75em;
+  &:active {
+    transform: translate3d(0, 1px, 0);
   }
 }

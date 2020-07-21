@@ -13,7 +13,7 @@
     font-size: 6vmax;
     color: #fff;
     font-weight: 500;
-    margin-top: 20vmax;
+    margin-top: 2vmax;
 
     transform: translate3d(0, -4px, 0);
     opacity: 0;
@@ -114,12 +114,12 @@
 
   min-width: 200px;
   width: 200px;
-  height: 200px;
+  height: auto;
 
   @media (min-width: 600px) {
     min-width: 400px;
     width: 400px;
-    height: 400px;
+    height: auto;
   }
 
   &:after {
@@ -286,4 +286,31 @@ $max-bars-has-animation: 100;
 .footer-buttons {
   max-width: 340px;
   margin: 30px auto;
+}
+
+.footer-links {
+  margin-top: 5vmax;
+  text-align: center;
+}
+
+.link--about {
+  color: #fff;
+  display: inline-block;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  background: transparent;
+  border: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  .icon {
+    margin-right: 0.25rem;
+    transform: scale(1.25);
+    display: inline-block;
+  }
 }

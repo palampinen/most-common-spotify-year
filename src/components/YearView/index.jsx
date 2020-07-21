@@ -17,6 +17,8 @@ import {
 import Modal from 'components/Modal';
 import TracksFromYear from 'components/TracksFromYear';
 import YearlyFacts from 'constants/YearlyFacts';
+import YearImage from 'components/YearImage';
+import AppHelp from 'components/AppHelp';
 import './YearView.scss';
 
 const YearView = props => {
@@ -24,6 +26,7 @@ const YearView = props => {
   const [detailYear, setYearDetail] = useState(null);
   const [factIndex, setFactIndex] = useState(null);
   const [isCopiedOk, setCopiedOk] = useState(false);
+  const [isAboutPageVisible, setAboutPageVisible] = useState(false);
   const year = get(props, ['match', 'params', 'year']);
   const { urlFactIndex } = props;
   const copyUrlRef = useRef();
@@ -42,22 +45,19 @@ const YearView = props => {
 
   const baseUrl = replace(window.location.href, '#', '');
   const url = urlFactIndex ? baseUrl : `${baseUrl}?fact=${factIndex}`;
-  const { yearlyTrackCounts, tracksByYears, yearsWithTracks, mainYearCoverUrl } = props;
+  const { yearlyTrackCounts, tracksByYears, yearsWithTracks } = props;
   const isSharedPage = yearlyTrackCounts.isEmpty();
 
   return (
     <>
       <Helmet>
-        <title>Obscurify. | Year {year}</title>
-        <meta name="description" content="Obscurify. Find out your main Music Year 🎵" />
-        <meta
-          property="og:image"
-          content={mainYearCoverUrl || 'https://picsum.photos/500/500'}
-        ></meta>
-        <meta property="og:title" content="Obscurify. Find out your main Music Year 🎵"></meta>
+        <title>Yeardrums | {year}</title>
+        <meta name="description" content="Yeardrums - Find out your main Music Year 🎵" />
+        <meta property="og:image" content="assets/yeardrums.png"></meta>
+        <meta property="og:title" content="Yeardrums - Find out your main Music Year 🎵"></meta>
         <meta
           property="og:description"
-          content="Obscurify app will analyze your musical taste from Spotify and give you year that you have most music."
+          content="Yeardrums app will analyze your musical taste from Spotify and give you year that you have most music."
         ></meta>
       </Helmet>
 
@@ -65,6 +65,9 @@ const YearView = props => {
         <TracksFromYear
           tracksByYears={tracksByYears}
           year={detailYear}
+          mainFactIndex={factIndex}
+          mainYear={year}
+          mainRandomFact={randomFact}
           availableYears={yearsWithTracks}
           setYear={setYearDetail}
           clearYear={() => {
@@ -73,6 +76,16 @@ const YearView = props => {
           }}
         />
       )}
+
+      {isAboutPageVisible && (
+        <AppHelp
+          onBack={() => {
+            window.location.hash = '';
+            setAboutPageVisible(false);
+          }}
+        />
+      )}
+
       <Modal>
         <div className="yearView">
           <h1>
@@ -84,9 +97,9 @@ const YearView = props => {
             {randomFact && <p className="yearView__fact">{randomFact}</p>}
 
             <figure className="yearView__img">
-              <img
-                alt={`Album from year ${year}`}
-                src={mainYearCoverUrl || 'https://picsum.photos/500/500'}
+              <YearImage
+                alt={`Image from year ${year}`}
+                imageId={`${year}-${factIndex + 1}`}
                 className="yearView__img__img"
               />
             </figure>
@@ -197,12 +210,24 @@ const YearView = props => {
               <div className="footer-buttons">
                 <Link className="btn-primary" to="/">
                   Find out your Year{' '}
-                  <span role="img" aria-label="music">
-                    🎵
+                  <span role="img" aria-label="drums">
+                    🥁
                   </span>
                 </Link>
               </div>
             )}
+
+            <div className="footer-links">
+              <button
+                className="link--about"
+                onClick={() => {
+                  window.location.hash = 'about';
+                  setAboutPageVisible(true);
+                }}
+              >
+                <i className="icon ion-help-circled"></i> About this app
+              </button>
+            </div>
           </div>
         </div>
       </Modal>
