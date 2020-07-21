@@ -107,12 +107,14 @@ const TracksFromYear = ({
               alt={`Image from year ${year}`}
               imageId={`${year}-${mainFactIndex + 1}`}
               className={styles.yearRandomImage}
+              isAnimated
             />
           </figure>
 
           {randomFact && <p className={styles.yearRandomFact}>{randomFact}</p>}
         </div>
 
+        <h3>Your Tracks</h3>
         <div className={styles.trackList}>
           {tracksByYear
             .sortBy(track => track.getIn(['artists', 0, 'name']))

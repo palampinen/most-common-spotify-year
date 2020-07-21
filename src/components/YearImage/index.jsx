@@ -234,7 +234,7 @@ const images = {
   '2020-3': '2020-3.jpg',
 };
 
-const YearImage = ({ imageId, alt, className, ...rest }) => {
+const YearImage = ({ imageId, alt, className, isAnimated = false, ...rest }) => {
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -250,10 +250,9 @@ const YearImage = ({ imageId, alt, className, ...rest }) => {
   return (
     <img
       {...rest}
-      className={classnames(className, 'yearImg', { loadingImg: !isLoaded })}
+      className={classnames(className, 'yearImg', { loadingImg: !isLoaded && isAnimated })}
       alt={alt || 'Random pic'}
-      // src={`${process.env.PUBLIC_URL}/images/${imageFileName}`}
-      src={`https://yeardrums.netlify.app/images/${imageFileName}`}
+      src={`${process.env.PUBLIC_URL}/images/${imageFileName}`}
       onLoad={() => setLoaded(true)}
     />
   );
