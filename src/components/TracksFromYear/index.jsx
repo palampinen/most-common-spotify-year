@@ -91,7 +91,7 @@ const TracksFromYear = ({
           >
             <i className={classnames('ion-arrow-left-b', styles.icon, styles.iconLeft)}></i>
           </button>
-          <span className={styles.titleText}>From Year {year}</span>
+          <span className={styles.titleText}>Year {year}</span>
           <button
             disabled={yearPosition >= availableYears.size - 1}
             className={styles.navButton}

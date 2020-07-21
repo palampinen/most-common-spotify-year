@@ -3,7 +3,7 @@
 
 .titleText {
   display: inline-block;
-  min-width: 200 / 16 * 1rem;
+  min-width: 160 / 16 * 1rem;
 
   @media (min-width: $breakpoint-medium) {
     min-width: 17.5rem;
@@ -216,6 +216,7 @@
   margin-left: -1em;
   margin-right: -1em;
   white-space: nowrap;
+  font-size: 1.75em;
 
   @media (min-width: $breakpoint-medium) {
     margin-left: 0;
@@ -360,6 +361,6 @@
   @media (min-width: 600px) {
     font-size: 1rem !important;
     line-height: 1.6 !important;
-    padding: 0 0 1.5rem 1.25rem;
+    padding: 0 0 1rem 1.25rem;
   }
 }
