@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import get from 'lodash/get';
-import random from 'lodash/random';
+// import random from 'lodash/random';
 import { List } from 'immutable';
 import classnames from 'classnames';
 
@@ -49,8 +49,8 @@ const TracksFromYear = ({
   mainYear,
   mainFactIndex,
 }) => {
-  const [randomFact, setRandomFact] = useState('');
-  const [factIndex, setFactIndex] = useState(null);
+  // const [randomFact, setRandomFact] = useState('');
+  // const [factIndex, setFactIndex] = useState(null);
 
   const tracksByYear = tracksByYears.get(year);
   const yearPosition = availableYears.indexOf(year);
@@ -64,15 +64,17 @@ const TracksFromYear = ({
     });
   };
 
-  useEffect(() => {
-    const facts = get(YearlyFacts, [year, 'facts']);
-    if (facts && facts.length) {
-      const factIndex = year === mainYear ? mainFactIndex : random(facts.length - 1);
+  // useEffect(() => {
+  //   const facts = get(YearlyFacts, [year, 'facts']);
+  //   if (facts && facts.length) {
+  //     // const factIndex = year === mainYear ? mainFactIndex : random(facts.length - 1);
+  //     // setFactIndex(factIndex);
+  //     setRandomFact(facts[mainFactIndex]);
+  //   }
+  // }, [mainYear, mainFactIndex, year]);
 
-      setFactIndex(factIndex);
-      setRandomFact(facts[factIndex]);
-    }
-  }, [mainYear, mainFactIndex, year]);
+  const facts = get(YearlyFacts, [year, 'facts']);
+  const randomFact = get(facts, [mainFactIndex]);
 
   return (
     <Modal className={styles.trackViewModal}>
@@ -103,7 +105,7 @@ const TracksFromYear = ({
           <figure className={styles.yearRandomFigure}>
             <YearImage
               alt={`Image from year ${year}`}
-              imageId={`${year}-${factIndex + 1}`}
+              imageId={`${year}-${mainFactIndex + 1}`}
               className={styles.yearRandomImage}
             />
           </figure>

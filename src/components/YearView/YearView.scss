@@ -64,14 +64,16 @@
 @keyframes img-appear {
   0% {
     opacity: 0;
-    transform: perspective(75vw) rotateY(10deg) rotate(-3deg) skew(-3deg, 1deg)
-      translate3d(-2rem, 0, 0);
+    transform: translate3d(-2rem, 0, 0);
+    // transform: perspective(75vw) rotateY(10deg) rotate(-3deg) skew(-3deg, 1deg)
+    //   translate3d(-2rem, 0, 0);
   }
 
   100% {
     opacity: 1;
-    transform: perspective(75vw) rotateY(10deg) rotate(-3deg) skew(-3deg, 1deg) translate3d(0, 0, 0)
-      scale(1.05);
+    transform: translate3d(0, 0, 0);
+    // transform: perspective(75vw) rotateY(10deg) rotate(-3deg) skew(-3deg, 1deg) translate3d(0, 0, 0)
+    //   scale(1.05);
   }
 }
 
@@ -102,11 +104,13 @@
   border-radius: 20px;
   background: transparent;
 
-  margin: 4rem auto 6rem;
+  margin: 3rem auto 4rem;
   line-height: 0;
 
+  /*
   transform: perspective(75vw) rotateY(10deg) rotate(-3deg) skew(-3deg, 1deg)
     translate3d(-2rem, 0, 0);
+*/
   opacity: 0;
   animation: img-appear 1s;
   animation-delay: 2.25s;
@@ -122,6 +126,7 @@
     height: auto;
   }
 
+  /*
   &:after {
     content: '';
     display: block;
@@ -138,6 +143,7 @@
     animation-delay: 2.666s;
     animation-fill-mode: forwards;
   }
+  */
 }
 
 .yearView__img__img {
@@ -148,9 +154,9 @@
   position: relative;
   z-index: 2;
 
-  animation: img-raise 1s;
-  animation-delay: 2.25s;
-  animation-fill-mode: forwards;
+  // animation: img-raise 1s;
+  // animation-delay: 2.25s;
+  // animation-fill-mode: forwards;
 }
 
 .yearView__footer {
@@ -289,7 +295,7 @@ $max-bars-has-animation: 100;
 }
 
 .footer-links {
-  margin: 5vmax 0;
+  margin: 7vmax 0 4vmax;
   text-align: center;
 }
 
