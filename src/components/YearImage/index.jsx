@@ -235,14 +235,10 @@ const images = {
 };
 
 const YearImage = ({ imageId, alt, className, ...rest }) => {
-  const [isChanged, setChanged] = useState(false);
+  const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setChanged(true);
-
-    setTimeout(() => {
-      setChanged(false);
-    }, 400);
+    setLoaded(false);
   }, [imageId]);
 
   const imageFileName = images[imageId];
@@ -254,9 +250,11 @@ const YearImage = ({ imageId, alt, className, ...rest }) => {
   return (
     <img
       {...rest}
-      className={classnames(className, 'yearImg', { loadingImg: isChanged })}
+      className={classnames(className, 'yearImg', { loadingImg: !isLoaded })}
       alt={alt || 'Random pic'}
-      src={`${process.env.PUBLIC_URL}/images/${imageFileName}`}
+      // src={`${process.env.PUBLIC_URL}/images/${imageFileName}`}
+      src={`https://yeardrums.netlify.app/images/${imageFileName}`}
+      onLoad={() => setLoaded(true)}
     />
   );
 };
