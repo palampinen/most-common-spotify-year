@@ -1,0 +1,9 @@
+.yearImg {
+  transition: all 0.3s;
+  opacity: 1;
+
+  &.loadingImg {
+    transition: 0s;
+    opacity: 0;
+  }
+}

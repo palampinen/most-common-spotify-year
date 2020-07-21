@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import classnames from 'classnames';
+
+import './YearImage.scss';
 
 const images = {
   '1945-1': '1945-1.jpg',
@@ -231,7 +234,17 @@ const images = {
   '2020-3': '2020-3.jpg',
 };
 
-const YearImage = ({ imageId, alt, ...rest }) => {
+const YearImage = ({ imageId, alt, className, ...rest }) => {
+  const [isChanged, setChanged] = useState(false);
+
+  useEffect(() => {
+    setChanged(true);
+
+    setTimeout(() => {
+      setChanged(false);
+    }, 400);
+  }, [imageId]);
+
   const imageFileName = images[imageId];
 
   if (!imageFileName) {
@@ -241,6 +254,7 @@ const YearImage = ({ imageId, alt, ...rest }) => {
   return (
     <img
       {...rest}
+      className={classnames(className, 'yearImg', { loadingImg: isChanged })}
       alt={alt || 'Random pic'}
       src={`${process.env.PUBLIC_URL}/images/${imageFileName}`}
     />
