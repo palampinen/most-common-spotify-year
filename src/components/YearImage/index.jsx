@@ -239,7 +239,11 @@ const YearImage = ({ imageId, alt, ...rest }) => {
   }
 
   return (
-    <img {...rest} alt={alt || 'Random pic'} src={require(`assets/images/${imageFileName}`)} />
+    <img
+      {...rest}
+      alt={alt || 'Random pic'}
+      src={`${process.env.PUBLIC_URL}/images/${imageFileName}`}
+    />
   );
 };
 

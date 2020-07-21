@@ -55,8 +55,6 @@ const TracksFromYear = ({
   const tracksByYear = tracksByYears.get(year);
   const yearPosition = availableYears.indexOf(year);
 
-  console.log(tracksByYears.toJS());
-
   window.onpopstate = function (event) {
     event.preventDefault && event.preventDefault();
     clearYear();
