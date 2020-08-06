@@ -10,50 +10,92 @@ const LoadingView = () => (
     */}
     <div className="spinner">
       <svg viewBox="0 0 64 64">
-        <g fill="none" fillRule="evenodd" strokeWidth="3">
-          <circle cx="32" cy="32" r="13.9548">
+        <g strokeWidth="1" strokeLinecap="square">
+          <line x1="10" x2="10">
             <animate
-              attributeName="r"
-              begin="0s"
-              dur="2s"
-              values="0;24"
-              keyTimes="0;1"
-              keySplines="0.1,0.2,0.3,1"
-              calcMode="spline"
+              attributeName="y1"
+              dur="750ms"
+              values="16;18;28;18;16;16"
+              repeatCount="indefinite"
+            ></animate>
+            <animate
+              attributeName="y2"
+              dur="750ms"
+              values="48;46;36;44;48;48"
               repeatCount="indefinite"
             ></animate>
             <animate
               attributeName="stroke-opacity"
-              begin="0s"
-              dur="2s"
-              values=".2;1;.2;0"
+              dur="750ms"
+              values="1;.4;.5;.8;1;1"
               repeatCount="indefinite"
             ></animate>
-          </circle>
-          <circle cx="32" cy="32" r="23.3">
+          </line>
+          <line x1="24" x2="24">
             <animate
-              attributeName="r"
-              begin="-1s"
-              dur="2s"
-              values="0;24"
-              keyTimes="0;1"
-              keySplines="0.1,0.2,0.3,1"
-              calcMode="spline"
+              attributeName="y1"
+              dur="750ms"
+              values="16;16;18;28;18;16"
+              repeatCount="indefinite"
+            ></animate>
+            <animate
+              attributeName="y2"
+              dur="750ms"
+              values="48;48;46;36;44;48"
               repeatCount="indefinite"
             ></animate>
             <animate
               attributeName="stroke-opacity"
-              begin="-1s"
-              dur="2s"
-              values=".2;1;.2;0"
+              dur="750ms"
+              values="1;1;.4;.5;.8;1"
               repeatCount="indefinite"
             ></animate>
-          </circle>
+          </line>
+          <line x1="38" x2="38">
+            <animate
+              attributeName="y1"
+              dur="750ms"
+              values="18;16;16;18;28;18"
+              repeatCount="indefinite"
+            ></animate>
+            <animate
+              attributeName="y2"
+              dur="750ms"
+              values="44;48;48;46;36;44"
+              repeatCount="indefinite"
+            ></animate>
+            <animate
+              attributeName="stroke-opacity"
+              dur="750ms"
+              values=".8;1;1;.4;.5;.8"
+              repeatCount="indefinite"
+            ></animate>
+          </line>
+          <line x1="52" x2="52">
+            <animate
+              attributeName="y1"
+              dur="750ms"
+              values="28;18;16;16;18;28"
+              repeatCount="indefinite"
+            ></animate>
+            <animate
+              attributeName="y2"
+              dur="750ms"
+              values="36;44;48;48;46;36"
+              repeatCount="indefinite"
+            ></animate>
+            <animate
+              attributeName="stroke-opacity"
+              dur="750ms"
+              values=".5;.8;1;1;.4;.5"
+              repeatCount="indefinite"
+            ></animate>
+          </line>
         </g>
       </svg>
     </div>
 
-    <h2>Analyzing your musical taste</h2>
+    <h2>Analyzing your musical taste…</h2>
   </div>
 );
 
