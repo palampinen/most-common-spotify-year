@@ -122,6 +122,7 @@ const YearView = props => {
 
             <figure className="yearView__img">
               <YearImage
+                isAnimated
                 alt={`Image from year ${year}`}
                 imageId={`${year}-${factIndex + 1}`}
                 className="yearView__img__img"
