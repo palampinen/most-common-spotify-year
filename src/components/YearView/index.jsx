@@ -15,7 +15,7 @@ import {
   fetchMostCommonYear,
 } from 'concepts/user-library';
 import Modal from 'components/Modal';
-import TracksFromYear from 'components/TracksFromYear';
+// import TracksFromYear from 'components/TracksFromYear';
 import YearlyFacts from 'constants/YearlyFacts';
 import YearImage from 'components/YearImage';
 import AppHelp from 'components/AppHelp';
@@ -24,7 +24,7 @@ import './YearView.scss';
 const YearView = props => {
   const [randomFact, setRandomFact] = useState('');
   const [factsCountForYear, setFactsCountForYear] = useState(0);
-  const [detailYear, setYearDetail] = useState(null);
+  // const [detailYear, setYearDetail] = useState(null);
   const [factIndex, setFactIndex] = useState(null);
   const [isCopiedOk, setCopiedOk] = useState(false);
   const [isAboutPageVisible, setAboutPageVisible] = useState(false);
@@ -49,7 +49,7 @@ const YearView = props => {
 
   const baseUrl = replace(window.location.href, '#', '');
   const url = urlFactIndex ? baseUrl : `${baseUrl}?fact=${factIndex}`;
-  const { yearlyTrackCounts, tracksByYears, yearsWithTracks } = props;
+  const { yearlyTrackCounts /*, tracksByYears, yearsWithTracks*/ } = props;
   const isSharedPage = yearlyTrackCounts.isEmpty();
 
   return (

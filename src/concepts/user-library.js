@@ -1,14 +1,14 @@
 // # Playlist concept
 
-import get from 'lodash/get';
+// import get from 'lodash/get';
 // import times from 'lodash/times';
-import head from 'lodash/head';
+// import head from 'lodash/head';
 import split from 'lodash/split';
 import first from 'lodash/first';
 import isNil from 'lodash/isNil';
 import random from 'lodash/random';
 import { fromJS, List, Map } from 'immutable';
-import { apiCall } from 'services/api';
+// import { apiCall } from 'services/api';
 import { createSelector } from 'reselect';
 import history from 'services/history';
 import { uniqBy } from 'services/immutable';
@@ -26,9 +26,9 @@ import FamousComposers from 'constants/FamousComposers';
 import { FROM_SAVED_TRACKS, FROM_SAVED_ALBUM, FROM_PLAYLIST } from 'constants/TrackSources';
 
 // # Action Types
-const SEARCH_TRACK = 'userLibrary/SEARCH_TRACK';
+// const SEARCH_TRACK = 'userLibrary/SEARCH_TRACK';
 // const SEARCH_TRACK_SUCCESS = 'userLibrary/SEARCH_TRACK_SUCCESS';
-const SEARCH_TRACK_READY = 'userLibrary/SEARCH_TRACK_READY';
+// const SEARCH_TRACK_READY = 'userLibrary/SEARCH_TRACK_READY';
 
 // # Selectors
 
@@ -208,6 +208,7 @@ export const getRandomCoverFromMainYear = createSelector(
 );
 
 // # Action Creators
+/*
 const searchTrack = originalTrack => dispatch => {
   const artistName = (originalTrack.getIn(['artists']) || List())
     .map(artist => artist.get('name'))
@@ -249,6 +250,8 @@ const searchTrack = originalTrack => dispatch => {
     })
     .catch(() => console.log('Could not get track'));
 };
+*/
+
 /*
 const fetchCompilationAlbumTracks = () => (dispatch, getState) => {
   const tracks = getAllUsersTracks(getState());
@@ -319,12 +322,12 @@ const initialState = fromJS({
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case SEARCH_TRACK_READY: {
-      return state.set(
-        'compilationReplacementTracks',
-        state.get('compilationReplacementTracks').push(fromJS(action.payload))
-      );
-    }
+    // case SEARCH_TRACK_READY: {
+    //   return state.set(
+    //     'compilationReplacementTracks',
+    //     state.get('compilationReplacementTracks').push(fromJS(action.payload))
+    //   );
+    // }
 
     default: {
       return state;
