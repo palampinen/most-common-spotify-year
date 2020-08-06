@@ -1,5 +1,5 @@
 // # Typography
-$font-family-sans-serif: 'Rubik', sans-serif;
+$font-family-sans-serif: 'Merriweather', 'Times', serif;
 $base-font-size: 16px;
 $base-font-size-mobile: 12px;
 
@@ -7,8 +7,8 @@ $base-font-size-mobile: 12px;
 // $gradient-1: hotpink;
 // $gradient-2: #4556fd;
 
-$gradient-1: #ffa17f;
-$gradient-2: #00223e;
+$gradient-1: #eee;
+$gradient-2: #fff;
 
 $dark-grey: #615f66;
 $data-grey: #555;
@@ -17,6 +17,8 @@ $grey: #d2d2d2;
 $light-grey: #fafafa;
 $bg-grey: #f9f9f9;
 $black: #000;
+
+$text-color: $black;
 
 $brand-primary: #e550a7;
 $brand-dark: darken($dark-grey, 20%);

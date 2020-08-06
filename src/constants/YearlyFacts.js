@@ -219,8 +219,8 @@ export default {
   1976: {
     facts: [
       `By law, no United States officer can outrank George Washington. He was posthumously promoted to Six-Star General in 1976.`,
-      `In 1976, Japan donated 53 bonsai trees to the US for its bicentennial, including a white pine that had been tended daily since 1625 and survived the Hiroshima atomic blast. Its history was unknown until 2001, when two brothers showed up at the museum to check on their grandfather's tree`,
-      `Ronald Wayne was a third cofounder of Apple, along with Steve Wozniak and Steve Jobs. In 1976, he sold his 10% share of the company for $800. Today, his 10% would be worth of 35 billion dollars."`,
+      `In 1976, Japan donated 53 bonsai trees to the US for its bicentennial, including a white pine that had been tended daily since 1625 and survived the Hiroshima atomic blast. Its history was unknown until 2001, when two brothers showed up at the museum to check on their grandfather's tree.`,
+      `Ronald Wayne was a third cofounder of Apple, along with Steve Wozniak and Steve Jobs. In 1976, he sold his 10% share of the company for $800. Today, his 10% would be worth of 35 billion dollars.`,
     ],
   },
   1977: {

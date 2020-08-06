@@ -23,6 +23,7 @@ import './YearView.scss';
 
 const YearView = props => {
   const [randomFact, setRandomFact] = useState('');
+  const [factsCountForYear, setFactsCountForYear] = useState(0);
   const [detailYear, setYearDetail] = useState(null);
   const [factIndex, setFactIndex] = useState(null);
   const [isCopiedOk, setCopiedOk] = useState(false);
@@ -32,12 +33,15 @@ const YearView = props => {
   const copyUrlRef = useRef();
 
   // Set random fact or get from URL
+  const facts = get(YearlyFacts, [year, 'facts']);
+
   useEffect(() => {
     const facts = get(YearlyFacts, [year, 'facts']);
     if (facts && facts.length) {
       const factIndex =
         urlFactIndex && urlFactIndex < facts.length ? urlFactIndex : random(facts.length - 1);
 
+      setFactsCountForYear(facts.length);
       setFactIndex(factIndex);
       setRandomFact(facts[factIndex]);
     }
@@ -61,7 +65,7 @@ const YearView = props => {
         ></meta>
       </Helmet>
 
-      {!!detailYear && (
+      {/*!!detailYear && (
         <TracksFromYear
           tracksByYears={tracksByYears}
           year={detailYear}
@@ -75,7 +79,7 @@ const YearView = props => {
             setYearDetail(null);
           }}
         />
-      )}
+        )*/}
 
       {isAboutPageVisible && (
         <AppHelp
@@ -94,7 +98,27 @@ const YearView = props => {
           </h1>
 
           <div className="yearView__content">
-            {randomFact && <p className="yearView__fact">{randomFact}</p>}
+            <div className="yearView__content__navigation">
+              <button
+                onClick={() => {
+                  const nextFactIndex = factIndex > 0 ? factIndex - 1 : factsCountForYear - 1;
+                  setFactIndex(nextFactIndex);
+                  setRandomFact(facts[nextFactIndex]);
+                }}
+              >
+                ‹
+              </button>
+              {randomFact && <p className="yearView__fact">{randomFact}</p>}
+              <button
+                onClick={() => {
+                  const nextFactIndex = factIndex + 1 >= factsCountForYear ? 0 : factIndex + 1;
+                  setFactIndex(nextFactIndex);
+                  setRandomFact(facts[nextFactIndex]);
+                }}
+              >
+                ›
+              </button>
+            </div>
 
             <figure className="yearView__img">
               <YearImage
@@ -108,6 +132,7 @@ const YearView = props => {
           <div className="yearView__footer">
             {!isSharedPage && (
               <>
+                {/*
                 <h3>Tracks by Year</h3>
                 <div className="yearView__viz">
                   {yearlyTrackCounts.map(yearlyCount => (
@@ -130,8 +155,9 @@ const YearView = props => {
                         </div>
                       </div>
                     </div>
-                  ))}
+                    ))}
                 </div>
+                    */}
 
                 <div className="yearView__share">
                   <h3>Share your year</h3>
@@ -225,7 +251,7 @@ const YearView = props => {
                   setAboutPageVisible(true);
                 }}
               >
-                <i className="icon ion-help-circled"></i> About this app
+                <i className="icon ion-ios-help-outline"></i> About this app
               </button>
             </div>
           </div>

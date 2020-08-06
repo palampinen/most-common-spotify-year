@@ -11,13 +11,13 @@
 
   animation: mic-drop 0.75s;
 
-  color: #fff;
+  color: $text-color;
 
   p {
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba($text-color, 0.9);
 
     strong {
-      color: #fff;
+      color: $text-color;
     }
   }
 }
@@ -35,11 +35,11 @@
 }
 
 .back-button {
-  color: #fff;
+  color: $text-color;
   font-weight: bold;
   background: transparent;
-  border: 2px solid #fff;
-  border-radius: 30px;
+  border: 1px solid $text-color;
+  border-radius: 0;
   padding: 0.5rem 1rem;
 
   cursor: pointer;

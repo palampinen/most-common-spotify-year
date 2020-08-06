@@ -14,7 +14,7 @@
   }
   &:hover {
     color: $color;
-    background-color: darken($background, 3%);
+    // background-color: darken($background, 3%);
     border-color: darken($border, 3%);
   }
   &:active {
@@ -25,7 +25,7 @@
     &:hover,
     &:focus {
       color: $color;
-      background-color: darken($background, 6%);
+      // background-color: darken($background, 6%);
       border-color: darken($border, 6%);
     }
   }
@@ -61,15 +61,15 @@
   padding: 1em 3em 0.98em;
   text-align: center;
   font-size: 4vw;
-  border-width: 0px;
+  border-width: 1px;
   border-style: solid;
-  border-radius: 50px;
+  border-radius: 0px;
   white-space: nowrap;
 
-  font-weight: bold;
+  font-weight: 400;
   cursor: pointer;
 
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.075);
+  box-shadow: none; // 0 10px 20px rgba(0, 0, 0, 0.075);
   transition: all 0.15s;
   user-select: none;
 
@@ -79,8 +79,8 @@
 }
 
 .btn-primary {
-  @include button-theme($brand-dark, #fff, #fff);
-  @include white-bg-button($brand-dark);
+  @include button-theme($brand-dark, #fff, $brand-dark);
+  // @include white-bg-button($brand-dark);
 }
 
 .btn-default {
@@ -103,11 +103,11 @@
   padding: 1em 0em;
   text-align: left;
   border: none;
-  color: #fff;
+  color: $text-color;
   text-decoration: underline;
 
   background: transparent;
-  font-weight: bold;
+  font-weight: 300;
 
   margin-top: 1em;
 }

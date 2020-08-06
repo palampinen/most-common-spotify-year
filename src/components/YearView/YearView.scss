@@ -3,33 +3,35 @@
 
 .yearView {
   display: block;
-  max-width: $breakpoint-small * 0.8;
+  max-width: $breakpoint-small * 1.2;
   margin: 0 auto;
 
   animation: mic-drop 0.75s;
 
   h1 {
     text-align: center;
-    font-size: 6vmax;
-    color: #fff;
+    font-size: 5.75vmax;
+    line-height: 1.05;
+    color: $text-color;
     font-weight: 500;
     margin-top: 2vmax;
 
     transform: translate3d(0, -4px, 0);
     opacity: 0;
 
-    animation: mic-drop 1s;
+    animation: mic-drop 0.6s;
     animation-delay: 0.75s;
     animation-fill-mode: forwards;
 
     .title {
       white-space: nowrap;
+      font-weight: 300;
     }
 
     .highlight {
       display: block;
-      font-weight: 700;
-      font-size: 10vmax;
+      font-weight: 400;
+      font-size: 9.5vmax;
       filter: drop-shadow(0 2vw 1vw rgba($brand-dark, 0.06));
 
       transform: translate3d(0, -4px, 0);
@@ -41,12 +43,12 @@
   }
 
   h3 {
-    color: #fff;
+    color: $text-color;
     text-align: center;
   }
 
   p {
-    color: #fff;
+    color: $text-color;
     font-size: 1.1rem;
     line-height: 1.5;
     text-align: center;
@@ -59,6 +61,40 @@
   animation: fade-in 1s;
   animation-fill-mode: forwards;
   animation-delay: 2s;
+}
+
+.yearView__content__navigation {
+  display: flex;
+  justify-content: space-between;
+
+  .yearView__fact {
+    width: calc(100% - 120px);
+    flex: calc(100% - 120px) 0 0;
+    padding: 0 0.5rem;
+  }
+
+  button {
+    margin: 0.25rem 0 0;
+    line-height: 1;
+    flex: 50px 0 0;
+    font-size: 4rem;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.1s linear;
+
+    @media (min-width: $breakpoint-medium) {
+      margin-top: 0.5rem;
+    }
+
+    &:active {
+      transform: translate3d(0, 2px, 0);
+      color: blue;
+    }
+  }
 }
 
 @keyframes img-appear {
@@ -94,7 +130,7 @@
   font-size: 0.9rem;
 
   @media (min-width: 600px) {
-    font-size: 1.75vmax;
+    font-size: 1.5rem;
   }
 }
 
@@ -164,7 +200,7 @@
   transform: translate3d(0, -4px, 0);
   opacity: 0;
 
-  animation: mic-drop 1s;
+  animation: mic-drop 1s linear;
   animation-fill-mode: forwards;
   animation-delay: 3s;
 }
@@ -194,8 +230,7 @@
   line-height: 40px;
   width: 40px;
   height: 40px;
-  color: rgba(0, 0, 0, 0.8);
-  color: $gradient-2;
+  color: $text-color;
 
   background: transparent;
   border: none;
@@ -215,12 +250,16 @@
   }
 
   .icon-success {
-    animation: scale-in 0.2s;
+    animation: scale-in 0.2s linear;
   }
 
   &:hover {
     opacity: 1;
     transform: scale(1.05);
+  }
+
+  &:active {
+    color: blue;
   }
 }
 
@@ -241,7 +280,7 @@
 }
 
 .yearView__viz__year {
-  color: #fff;
+  color: $text-color;
   font-weight: bold;
   position: absolute;
   left: 0;
@@ -300,7 +339,7 @@ $max-bars-has-animation: 100;
 }
 
 .link--about {
-  color: #fff;
+  color: blue;
   display: inline-block;
   text-align: center;
   font-weight: 500;

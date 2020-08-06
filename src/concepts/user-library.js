@@ -1,7 +1,7 @@
 // # Playlist concept
 
 import get from 'lodash/get';
-import times from 'lodash/times';
+// import times from 'lodash/times';
 import head from 'lodash/head';
 import split from 'lodash/split';
 import first from 'lodash/first';
@@ -249,7 +249,7 @@ const searchTrack = originalTrack => dispatch => {
     })
     .catch(() => console.log('Could not get track'));
 };
-
+/*
 const fetchCompilationAlbumTracks = () => (dispatch, getState) => {
   const tracks = getAllUsersTracks(getState());
 
@@ -291,6 +291,7 @@ const fetchCompilationAlbumTracks = () => (dispatch, getState) => {
     Promise.resolve()
   );
 };
+*/
 
 const redirectToCorrectYearPage = () => (dispatch, getState) => {
   const mostCommonYear = calculateMostCommonYear(getState());
@@ -301,12 +302,14 @@ const redirectToCorrectYearPage = () => (dispatch, getState) => {
 };
 
 export const fetchMostCommonYear = () => dispatch => {
-  return dispatch(fetchAllPlaylists())
-    .then(() => dispatch(fetchAllPlaylistsTracks()))
-    .then(() => dispatch(fetchAllSavedTracks()))
-    .then(() => dispatch(fetchAllSavedAlbums()))
-    .then(() => dispatch(fetchCompilationAlbumTracks()))
-    .then(() => dispatch(redirectToCorrectYearPage()));
+  return (
+    dispatch(fetchAllPlaylists())
+      .then(() => dispatch(fetchAllPlaylistsTracks()))
+      .then(() => dispatch(fetchAllSavedTracks()))
+      .then(() => dispatch(fetchAllSavedAlbums()))
+      // .then(() => dispatch(fetchCompilationAlbumTracks()))
+      .then(() => dispatch(redirectToCorrectYearPage()))
+  );
 };
 
 // # Reducer

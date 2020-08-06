@@ -12,9 +12,8 @@ class Apphelp extends Component {
           </button>
           <h1>Yeardrums</h1>
           <p>
-            Yeardrums is an app developed/produced by Pasi Lampinen and Jack Spurr as a means to
-            give Spotify users insight on their musical library and some fun history facts about
-            each year.
+            Yeardrums is an app developed/produced by Jack Spurr as a means to give Spotify users
+            insight on their musical library and some fun history facts about each year.
           </p>
           <p>
             Yeardrums covers libraries with songs from 1945-2020. The song's accounted for when

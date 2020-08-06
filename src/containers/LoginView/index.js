@@ -23,7 +23,7 @@ class LoginView extends Component {
               Yeardrums
             </span>
 
-            <h1 className="login__title">How old is your musical taste?</h1>
+            <h1 className="login__title">Get insight on your musical library</h1>
             <div className="login__secondary">
               <button className="btn btn-primary btn-login" onClick={this.props.authorizeUser}>
                 <SpotifyLogo className="spotifyLogo" /> Log in with Spotify
