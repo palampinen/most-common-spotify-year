@@ -505,7 +505,7 @@ export default {
   },
   2017: {
     facts: [
-      `The classic Happy Birthday song was copyrighted and was illegal to use in public performances/shows unless royalties were paid. This ended in 2016 when Warner paid $14 million in a lawsuit to end the copyright`,
+      `In May 2017, a New Jersey man was watching TV when he saw a news report about a $24.1 million unclaimed New York Lottery prize that was about to expire. He went to his closet, checked the stack of tickets he’d stuck in a shirt pocket, and was shocked to discover that he in fact had the winning ticket.`,
       `London's population was about the same in 2017 as it was before WWII`,
       `In 2017, NASA astronaut Peggy Whitson broke the record for most cumulative days spent in orbit by a U.S. Astronaut. She also holds the record for the woman with the most extra-vehicular time, and was the first woman to command the International Space Station.`,
     ],
