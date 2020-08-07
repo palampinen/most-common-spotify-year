@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import get from 'lodash/get';
-// import random from 'lodash/random';
+import random from 'lodash/random';
 import { List } from 'immutable';
 import classnames from 'classnames';
 
@@ -49,8 +49,8 @@ const TracksFromYear = ({
   mainYear,
   mainFactIndex,
 }) => {
-  // const [randomFact, setRandomFact] = useState('');
-  // const [factIndex, setFactIndex] = useState(null);
+  const [randomFact, setRandomFact] = useState('');
+  const [factIndex, setFactIndex] = useState(null);
 
   const tracksByYear = tracksByYears.get(year);
   const yearPosition = availableYears.indexOf(year);
@@ -64,17 +64,24 @@ const TracksFromYear = ({
     });
   };
 
-  // useEffect(() => {
-  //   const facts = get(YearlyFacts, [year, 'facts']);
-  //   if (facts && facts.length) {
-  //     // const factIndex = year === mainYear ? mainFactIndex : random(facts.length - 1);
-  //     // setFactIndex(factIndex);
-  //     setRandomFact(facts[mainFactIndex]);
-  //   }
-  // }, [mainYear, mainFactIndex, year]);
-
   const facts = get(YearlyFacts, [year, 'facts']);
-  const randomFact = get(facts, [mainFactIndex]);
+
+  // const randomFact = get(facts, [mainFactIndex]);
+
+  useEffect(() => {
+    const facts = get(YearlyFacts, [year, 'facts']);
+    if (facts && facts.length) {
+      const factIndex = year === mainYear ? mainFactIndex : random(facts.length - 1);
+      setFactIndex(factIndex);
+      setRandomFact(facts[mainFactIndex]);
+    }
+  }, [mainYear, mainFactIndex, year]);
+
+  const nextFact = () => {
+    const nextFactIndex = factIndex + 1 >= facts.length ? 0 : factIndex + 1;
+    setFactIndex(nextFactIndex);
+    setRandomFact(facts[nextFactIndex]);
+  };
 
   return (
     <Modal className={styles.trackViewModal}>
@@ -105,13 +112,21 @@ const TracksFromYear = ({
           <figure className={styles.yearRandomFigure}>
             <YearImage
               alt={`Image from year ${year}`}
-              imageId={`${year}-${mainFactIndex + 1}`}
+              imageId={`${year}-${factIndex + 1}`}
               className={styles.yearRandomImage}
               isAnimated
             />
           </figure>
 
-          {randomFact && <p className={styles.yearRandomFact}>{randomFact}</p>}
+          {randomFact && (
+            <p className={styles.yearRandomFact}>
+              {randomFact}
+
+              <button className={styles.linkButton} onClick={nextFact}>
+                Next fact…
+              </button>
+            </p>
+          )}
         </div>
 
         <h3>Your Tracks</h3>

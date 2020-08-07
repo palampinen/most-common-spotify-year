@@ -15,7 +15,7 @@ import {
   fetchMostCommonYear,
 } from 'concepts/user-library';
 import Modal from 'components/Modal';
-// import TracksFromYear from 'components/TracksFromYear';
+import TracksFromYear from 'components/TracksFromYear';
 import YearlyFacts from 'constants/YearlyFacts';
 import YearImage from 'components/YearImage';
 import AppHelp from 'components/AppHelp';
@@ -24,7 +24,7 @@ import './YearView.scss';
 const YearView = props => {
   const [randomFact, setRandomFact] = useState('');
   const [factsCountForYear, setFactsCountForYear] = useState(0);
-  // const [detailYear, setYearDetail] = useState(null);
+  const [detailYear, setYearDetail] = useState(null);
   const [factIndex, setFactIndex] = useState(null);
   const [isCopiedOk, setCopiedOk] = useState(false);
   const [isAboutPageVisible, setAboutPageVisible] = useState(false);
@@ -49,7 +49,7 @@ const YearView = props => {
 
   const baseUrl = replace(window.location.href, '#', '');
   const url = urlFactIndex ? baseUrl : `${baseUrl}?fact=${factIndex}`;
-  const { yearlyTrackCounts /*, tracksByYears, yearsWithTracks*/ } = props;
+  const { yearlyTrackCounts, tracksByYears, yearsWithTracks } = props;
   const isSharedPage = yearlyTrackCounts.isEmpty();
 
   return (
@@ -65,7 +65,7 @@ const YearView = props => {
         ></meta>
       </Helmet>
 
-      {/*!!detailYear && (
+      {!!detailYear && (
         <TracksFromYear
           tracksByYears={tracksByYears}
           year={detailYear}
@@ -79,7 +79,7 @@ const YearView = props => {
             setYearDetail(null);
           }}
         />
-        )*/}
+      )}
 
       {isAboutPageVisible && (
         <AppHelp
@@ -101,9 +101,9 @@ const YearView = props => {
             <div className="yearView__content__navigation">
               <button
                 onClick={() => {
-                  const nextFactIndex = factIndex > 0 ? factIndex - 1 : factsCountForYear - 1;
-                  setFactIndex(nextFactIndex);
-                  setRandomFact(facts[nextFactIndex]);
+                  const prevFactIndex = factIndex > 0 ? factIndex - 1 : factsCountForYear - 1;
+                  setFactIndex(prevFactIndex);
+                  setRandomFact(facts[prevFactIndex]);
                 }}
               >
                 ‹
@@ -133,8 +133,7 @@ const YearView = props => {
           <div className="yearView__footer">
             {!isSharedPage && (
               <>
-                {/*
-                <h3>Tracks by Year</h3>
+                <h3>Your Tracks by Year</h3>
                 <div className="yearView__viz">
                   {yearlyTrackCounts.map(yearlyCount => (
                     <div
@@ -156,9 +155,8 @@ const YearView = props => {
                         </div>
                       </div>
                     </div>
-                    ))}
+                  ))}
                 </div>
-                    */}
 
                 <div className="yearView__share">
                   <h3>Share your year</h3>
@@ -271,7 +269,5 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = { fetchMostCommonYear };
-
-// const YearViewWithRouter = withRouter(YearView);
 
 export default connect(mapStateToProps, mapDispatchToProps)(YearView);
