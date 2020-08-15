@@ -11,6 +11,8 @@ import YearImage from 'components/YearImage';
 import styles from './TracksFromYear.module.scss';
 import { FROM_SAVED_TRACKS, FROM_SAVED_ALBUM, FROM_PLAYLIST } from 'constants/TrackSources';
 
+const IS_YEARLY_TRACKS_ENABLED = false;
+
 const getSourceInformation = track => {
   const source = track.getIn(['source', 'type']);
   if (source === FROM_SAVED_TRACKS) {
@@ -123,48 +125,46 @@ const TracksFromYear = ({
               {randomFact}
 
               <button className={styles.linkButton} onClick={nextFact}>
-                Next fact…
+                More facts…
               </button>
             </p>
           )}
         </div>
 
-        <h3>Your Tracks</h3>
-        <div className={styles.trackList}>
-          {tracksByYear
-            .sortBy(track => track.getIn(['artists', 0, 'name']))
-            .map(track => (
-              <a
-                className={styles.track}
-                href={track.getIn(['uri'])}
-                key={`${year}-${track.getIn(['id'])}`}
-              >
-                <figure className={styles.img}>
-                  <img alt="Album cover" src={track.getIn(['album', 'images', 2, 'url'])} />
-                  <PlayIcon className={styles.playIcon} />
-                </figure>
-                <span className={styles.trackInfo}>
-                  <span className={styles.artist}>
-                    {(track.getIn(['artists']) || List())
-                      .map(artist => artist.get('name'))
-                      .join(', ')}{' '}
-                    • <span>{track.getIn(['name'])}</span>
-                  </span>
-                  <span className={styles.name}>{getSourceInformation(track)}</span>
-                </span>
-                {/*
-                <span className={styles.moreInfo}>
-                  <span className={classnames('ion-more', styles.moreIcon)}></span>
-                  <span className={styles.trackSource}>{getSourceInformation(track)}</span>
-                </span>
-                */}
-              </a>
-            ))}
-        </div>
-        {tracksByYear.size > 10 && (
-          <button className={styles.backButton} onClick={clearYear}>
-            <i className="ion-arrow-left-c icon"></i> Back
-          </button>
+        {IS_YEARLY_TRACKS_ENABLED && (
+          <>
+            <h3>Your Tracks</h3>
+            <div className={styles.trackList}>
+              {tracksByYear
+                .sortBy(track => track.getIn(['artists', 0, 'name']))
+                .map(track => (
+                  <a
+                    className={styles.track}
+                    href={track.getIn(['uri'])}
+                    key={`${year}-${track.getIn(['id'])}`}
+                  >
+                    <figure className={styles.img}>
+                      <img alt="Album cover" src={track.getIn(['album', 'images', 2, 'url'])} />
+                      <PlayIcon className={styles.playIcon} />
+                    </figure>
+                    <span className={styles.trackInfo}>
+                      <span className={styles.artist}>
+                        {(track.getIn(['artists']) || List())
+                          .map(artist => artist.get('name'))
+                          .join(', ')}{' '}
+                        • <span>{track.getIn(['name'])}</span>
+                      </span>
+                      <span className={styles.name}>{getSourceInformation(track)}</span>
+                    </span>
+                  </a>
+                ))}
+            </div>
+            {tracksByYear.size > 10 && (
+              <button className={styles.backButton} onClick={clearYear}>
+                <i className="ion-arrow-left-c icon"></i> Back
+              </button>
+            )}
+          </>
         )}
       </div>
     </Modal>

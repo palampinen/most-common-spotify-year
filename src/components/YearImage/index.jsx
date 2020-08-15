@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
-
+import Loader from 'components/Loader';
 import './YearImage.scss';
 
 const images = {
@@ -235,26 +235,31 @@ const images = {
 };
 
 const YearImage = ({ imageId, alt, className, isAnimated = false, ...rest }) => {
-  const [isLoaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(false);
-  }, [imageId]);
-
+  const [loadedImages, setLoaded] = useState({});
   const imageFileName = images[imageId];
 
   if (!imageFileName) {
     return null;
   }
 
+  const isLoaded = !!loadedImages[imageId];
+
   return (
-    <img
-      {...rest}
-      className={classnames(className, 'yearImg', { loadingImg: !isLoaded && isAnimated })}
-      alt={alt || 'Random pic'}
-      src={`${process.env.PUBLIC_URL}/images/${imageFileName}`}
-      onLoad={() => setLoaded(true)}
-    />
+    <div className="yearImgWrap">
+      <img
+        {...rest}
+        className={classnames(className, 'yearImg', { loadingImg: !isLoaded && isAnimated })}
+        alt={alt || 'Random pic'}
+        src={`${process.env.PUBLIC_URL}/images/${imageFileName}`}
+        onLoad={() => {
+          setLoaded({ ...loadedImages, [imageId]: true });
+        }}
+        onError={() => {
+          setLoaded({ ...loadedImages, [imageId]: true });
+        }}
+      />
+      {!isLoaded && isAnimated && <Loader className="yearImgLoader" />}
+    </div>
   );
 };
 

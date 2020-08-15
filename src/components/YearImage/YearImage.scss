@@ -1,3 +1,12 @@
+@import 'styles/variables.scss';
+
+.yearImgWrap {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
 .yearImg {
   transition: all 0.2s;
   opacity: 1;
@@ -6,4 +15,17 @@
     transition: 0s;
     opacity: 0;
   }
+}
+
+.yearImgLoader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+
+  margin-bottom: 0rem;
+  width: 80px !important;
+
+  stroke: rgba($text-color, 0.75);
+  fill: rgba($text-color, 0.75);
 }
