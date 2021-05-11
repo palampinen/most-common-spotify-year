@@ -11,7 +11,7 @@
     "connected-react-router": "^6.8.0",
     "immutable": "^4.0.0-rc.12",
     "local-storage": "^2.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.26.0",
     "node-sass": "^4.14.1",
     "query-string": "^6.13.1",
